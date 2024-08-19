@@ -31,6 +31,30 @@
 
         ctx.fillStyle = "rgba(0, 255, 0, 0.6)";
         ctx.fillRect(100, 100, 100, 100);
+
+        ctx.strokeRect(260, 260, 100, 100);
+
+        ctx.strokeStyle = "FF0000";
+        ctx.lineWidth = 4;
+        ctx.strokeRect(260, 260, 100, 100);
+
+        ctx.strokeStyle = "red";
+        ctx.lineWidth = 8;
+        ctx.strokeRect(340, 340, 100, 100);
+
+        ctx.strokeStyle = "rgb(36, 142, 255)";
+        ctx.fillStyle = "rgba(0, 0, 255, 0.5)";
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(425, 20);
+        ctx.lineTo(325, 100);
+        ctx.lineTo(525, 100);
+        ctx.closePath();
+        ctx.stroke();
+        ctx.fill();
+
+        //utilizar fill para el triangulo tambien
+        // triangulo con relleno y con borde y cuadros rellenos y vacios
     </script>
 </body>
 
