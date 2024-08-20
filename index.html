@@ -17,7 +17,7 @@
 </head>
 
 <body>
-    <canvas id="myCanvas" width="600" height="500"></canvas>
+    <canvas id="myCanvas" width="800" height="500"></canvas>
     <script type="text/javascript">
         const myCanvas = document.getElementById("myCanvas");
 
@@ -81,11 +81,18 @@
         gradient.addColorStop(1, "red");
         ctx.fillStyle = gradient;
         ctx.fillText("Hello world", 72, 297);
-        
+
         var img = new Image();
         img.src = "pancho.png";
 
         ctx.drawImage(img, 75, 315);
+
+        const grd = ctx.createLinearGradient(370, 370, 900, 0);
+        grd.addColorStop(0, "#F01010");
+        grd.addColorStop(1, "#1A2B3C");
+
+        ctx.fillStyle = grd;
+        ctx.fillRect(370, 370, 350, 100);
     </script>
 </body>
 
