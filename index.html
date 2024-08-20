@@ -64,6 +64,28 @@
         ctx.arc(475, 200, 50, 0, 2 * Math.PI);
         ctx.stroke();
 
+        ctx.strokeStyle = "#524242";
+        ctx.fillStyle = "#ABCDEF";
+        ctx.beginPath();
+        ctx.arc(475, 200, 20, 0, 1 * Math.PI);
+        ctx.stroke();
+        ctx.fill();
+
+        ctx.fillStyle = "black";
+        ctx.font = "30px times new roman";
+        ctx.fillText("Hello world", 75, 300);
+
+        const gradient = ctx.createLinearGradient(0, 0, 200, 0);
+        gradient.addColorStop(0, "yellow");
+        gradient.addColorStop(0.5, "orange");
+        gradient.addColorStop(1, "red");
+        ctx.fillStyle = gradient;
+        ctx.fillText("Hello world", 72, 297);
+        
+        var img = new Image();
+        img.src = "pancho.png";
+
+        ctx.drawImage(img, 75, 315);
     </script>
 </body>
 
