@@ -17,91 +17,127 @@
 </head>
 
 <body>
-    <canvas id="myCanvas" width="800" height="500"></canvas>
+    <canvas id="myCanvas" width="1000" height="1000"></canvas>
     <script type="text/javascript">
         const myCanvas = document.getElementById("myCanvas");
 
         const ctx = myCanvas.getContext("2d");
 
-        ctx.fillStyle = "#DC98FF";
-        ctx.fillRect(20, 20, 100, 100);
+        var figura = 0;
 
-        ctx.fillStyle = "rgb(255, 241, 9)";
-        ctx.fillRect(180, 180, 100, 100);
+        function getRandomColor() {
+            var trans = '0.5';
+            var color = 'rgba(';
+            for (var i = 0; i < 3; i++) {
+                color += Math.floor(Math.random() * 255) + ',';
+            }
+            color += trans + ')';
+            return color;
+        }
 
-        ctx.fillStyle = "rgba(0, 255, 0, 0.6)";
-        ctx.fillRect(100, 100, 100, 100);
 
-        ctx.strokeRect(260, 260, 100, 100);
+        document.getElementById("myCanvas").addEventListener('mouseout', function (e) {
+            figura = (figura == 1) ? 2 : 1;
+        });
 
-        ctx.strokeStyle = "FF0000";
-        ctx.lineWidth = 4;
-        ctx.strokeRect(260, 260, 100, 100);
+        document.getElementById("myCanvas").addEventListener('mouseover', function (e) {
+            ctx.fillStyle = getRandomColor();
+            ctx.lineWidth = 3;
+            ctx.strokeStyle = "black";
+        });
+        document.getElementById("myCanvas").addEventListener("mousedown", function (e) {
+            {
+                if (figura == 1) {
+                    ctx.beginPath();
+                    ctx.arc(e.offsetX, e.offsetY, 80, 0, 2 * Math.PI);
+                    ctx.stroke();
+                    ctx.fill();
+                } else {
+                    ctx.fillRect(e.offsetX - 75, e.offsetY - 75, 150, 150);
+                    ctx.strokeRect(e.offsetX - 75, e.offsetY - 75, 150, 150);
+                }
+            }
+        })
+        // ctx.fillStyle = "#DC98FF";
+        // ctx.fillRect(20, 20, 100, 100);
 
-        ctx.strokeStyle = "red";
-        ctx.lineWidth = 8;
-        ctx.strokeRect(340, 340, 100, 100);
+        // ctx.fillStyle = "rgb(255, 241, 9)";
+        // ctx.fillRect(180, 180, 100, 100);
 
-        ctx.strokeStyle = "rgb(36, 142, 255)";
-        ctx.fillStyle = "rgba(0, 0, 255, 0.5)";
-        ctx.lineWidth = 3;
-        ctx.beginPath();
-        ctx.moveTo(425, 20);
-        ctx.lineTo(325, 100);
-        ctx.lineTo(525, 100);
-        ctx.closePath();
-        ctx.stroke();
-        ctx.fill();
+        // ctx.fillStyle = "rgba(0, 255, 0, 0.6)";
+        // ctx.fillRect(100, 100, 100, 100);
 
-        ctx.fillStyle = "#FFA031";
-        ctx.beginPath();
-        ctx.arc(425, 200, 50, 0, 2 * Math.PI);
-        ctx.stroke();
-        ctx.fill();
+        // ctx.strokeRect(260, 260, 100, 100);
 
-        ctx.strokeStyle = "#524242";
-        ctx.beginPath();
-        ctx.arc(475, 200, 50, 0, 2 * Math.PI);
-        ctx.stroke();
+        // ctx.strokeStyle = "FF0000";
+        // ctx.lineWidth = 4;
+        // ctx.strokeRect(260, 260, 100, 100);
 
-        ctx.strokeStyle = "#524242";
-        ctx.fillStyle = "#ABCDEF";
-        ctx.beginPath();
-        ctx.arc(475, 200, 20, 0, 1 * Math.PI);
-        ctx.stroke();
-        ctx.fill();
+        // ctx.strokeStyle = "red";
+        // ctx.lineWidth = 8;
+        // ctx.strokeRect(340, 340, 100, 100);
 
-        ctx.fillStyle = "black";
-        ctx.font = "30px times new roman";
-        ctx.fillText("Hello world", 75, 300);
+        // ctx.strokeStyle = "rgb(36, 142, 255)";
+        // ctx.fillStyle = "rgba(0, 0, 255, 0.5)";
+        // ctx.lineWidth = 3;
+        // ctx.beginPath();
+        // ctx.moveTo(425, 20);
+        // ctx.lineTo(325, 100);
+        // ctx.lineTo(525, 100);
+        // ctx.closePath();
+        // ctx.stroke();
+        // ctx.fill();
 
-        const gradient = ctx.createLinearGradient(0, 0, 200, 0);
-        gradient.addColorStop(0, "yellow");
-        gradient.addColorStop(0.5, "orange");
-        gradient.addColorStop(1, "red");
-        ctx.fillStyle = gradient;
-        ctx.fillText("Hello world", 72, 297);
+        // ctx.fillStyle = "#FFA031";
+        // ctx.beginPath();
+        // ctx.arc(425, 200, 50, 0, 2 * Math.PI);
+        // ctx.stroke();
+        // ctx.fill();
 
-        var img = new Image();
-        img.src = "pancho.png";
+        // ctx.strokeStyle = "#524242";
+        // ctx.beginPath();
+        // ctx.arc(475, 200, 50, 0, 2 * Math.PI);
+        // ctx.stroke();
 
-        ctx.drawImage(img, 75, 315);
+        // ctx.strokeStyle = "#524242";
+        // ctx.fillStyle = "#ABCDEF";
+        // ctx.beginPath();
+        // ctx.arc(475, 200, 20, 0, 1 * Math.PI);
+        // ctx.stroke();
+        // ctx.fill();
 
-        const grd = ctx.createLinearGradient(370, 370, 900, 0);
-        grd.addColorStop(0, "#F01010");
-        grd.addColorStop(1, "#1A2B3C");
+        // ctx.fillStyle = "black";
+        // ctx.font = "30px times new roman";
+        // ctx.fillText("Hello world", 75, 300);
 
-        ctx.fillStyle = grd;
-        ctx.fillRect(370, 370, 350, 100);
+        // const gradient = ctx.createLinearGradient(0, 0, 200, 0);
+        // gradient.addColorStop(0, "yellow");
+        // gradient.addColorStop(0.5, "orange");
+        // gradient.addColorStop(1, "red");
+        // ctx.fillStyle = gradient;
+        // ctx.fillText("Hello world", 72, 297);
 
-        const grdRadial = ctx.createRadialGradient(590, 60, 5, 575, 60, 75);
-        grdRadial.addColorStop(0, "skyblue");
-        grdRadial.addColorStop(0.5, "blue");
-        grdRadial.addColorStop(0.75, "purple");
-        grdRadial.addColorStop(1, "black");
+        // var img = new Image();
+        // img.src = "pancho.png";
 
-        ctx.fillStyle = grdRadial;
-        ctx.fillRect(550, 10, 150, 100);
+        // ctx.drawImage(img, 75, 315);
+
+        // const grd = ctx.createLinearGradient(370, 370, 900, 0);
+        // grd.addColorStop(0, "#F01010");
+        // grd.addColorStop(1, "#1A2B3C");
+
+        // ctx.fillStyle = grd;
+        // ctx.fillRect(370, 370, 350, 100);
+
+        // const grdRadial = ctx.createRadialGradient(590, 60, 5, 575, 60, 75);
+        // grdRadial.addColorStop(0, "skyblue");
+        // grdRadial.addColorStop(0.5, "blue");
+        // grdRadial.addColorStop(0.75, "purple");
+        // grdRadial.addColorStop(1, "black");
+
+        // ctx.fillStyle = grdRadial;
+        // ctx.fillRect(550, 10, 150, 100);
+
     </script>
 </body>
 
