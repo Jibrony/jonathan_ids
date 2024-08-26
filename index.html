@@ -25,12 +25,7 @@
 
         var figura = 0;
 
-        document.getElementById("myCanvas").addEventListener('mousemove', function (e) {
-            ctx.beginPath();
-            ctx.arc(e.offsetX, e.offsetY, 5, 0, 2 * Math.PI);
-            ctx.stroke();
-            ctx.fill();
-        });
+        var dibujar = false;
 
         function getRandomColor() {
             var trans = '0.5';
@@ -40,6 +35,26 @@
             }
             color += trans + ')';
             return color;
+        }
+
+        document.getElementById("myCanvas").addEventListener('mousedown', function (e) {
+            dibujar = true;
+            Circulo(e);
+        });
+        document.getElementById("myCanvas").addEventListener('mousemove', function (e) {
+            if(dibujar == true) {
+                Circulo(e);
+            }
+        });
+        document.getElementById("myCanvas").addEventListener('mouseup', function (e) {
+            dibujar = false;
+        });
+
+        function Circulo(e) {
+            ctx.beginPath();
+            ctx.arc(e.offsetX, e.offsetY, 5, 0, 2 * Math.PI);
+            ctx.stroke();
+            ctx.fill();
         }
 
         document.getElementById("myCanvas").addEventListener('mouseout', function (e) {
@@ -65,7 +80,7 @@
             }
         })
 
-        
+
         // ctx.fillStyle = "#DC98FF";
         // ctx.fillRect(20, 20, 100, 100);
 
