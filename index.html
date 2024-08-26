@@ -25,6 +25,13 @@
 
         var figura = 0;
 
+        document.getElementById("myCanvas").addEventListener('mousemove', function (e) {
+            ctx.beginPath();
+            ctx.arc(e.offsetX, e.offsetY, 5, 0, 2 * Math.PI);
+            ctx.stroke();
+            ctx.fill();
+        });
+
         function getRandomColor() {
             var trans = '0.5';
             var color = 'rgba(';
@@ -34,7 +41,6 @@
             color += trans + ')';
             return color;
         }
-
 
         document.getElementById("myCanvas").addEventListener('mouseout', function (e) {
             figura = (figura == 1) ? 2 : 1;
@@ -58,6 +64,8 @@
                 }
             }
         })
+
+        
         // ctx.fillStyle = "#DC98FF";
         // ctx.fillRect(20, 20, 100, 100);
 
