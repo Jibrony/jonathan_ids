@@ -18,16 +18,19 @@
 
 <body>
     <canvas id="myCanvas" width="600" height="600"></canvas>
+    <p id="Cont">Speed: 4</p>
     <script type="text/javascript">
         const myCanvas = document.getElementById("myCanvas");
-
+        
         const ctx = myCanvas.getContext("2d");
-
-        const speed = 16;
+        
+        var speed = 4;
         var x = 100;
         var y = 100;
         var h = 50;
         var v = 50;
+
+        let way = "";
 
         function getRandomColor() {
             var trans = '0.5';
@@ -49,34 +52,69 @@
         document.addEventListener('keydown', (e) => {
             switch (e.key) {
                 case "w":
-                    y -= speed;
+                    // y -= speed;
+                    way = "up";
                     break;
                 case "s":
-                    y += speed;
+                    // y += speed;
+                    way = "down";
                     break;
                 case "a":
-                    x -= speed;
+                    // x -= speed;
+                    way = "left";
                     break;
                 case "d":
+                    // x += speed;
+                    way = "right";
+                    break;
+                case " ":
+                    speed += 4;
+                    document.getElementById('Cont').innerText = "Speed: " + speed;
+                    break;
+            }
+
+            drawRect();
+        });
+
+        function Update() {
+            switch (way) {
+                case "up":
+                    y -= speed;
+                    break;
+                case "down":
+                    y += speed;
+                    break;
+                case "left":
+                    x -= speed;
+                    break;
+                case "right":
                     x += speed;
                     break;
             }
+
             if (x < - h) {
                 x = myCanvas.width;
             } else if (x > myCanvas.width) {
                 x = -h;
             }
-    
+
             if (y < -v) {
                 y = myCanvas.height;
             } else if (y > myCanvas.height) {
                 y = - v;
             }
-            drawRect();
-        });
 
+        }
+
+        function GameLoop() {
+            Update();
+            drawRect();
+            requestAnimationFrame(GameLoop);
+        }
         ctx.fillRect(x, y, 50, 50);
         ctx.strokeRect(x, y, 50, 50);
+
+        GameLoop();
 
         // var figura = 0;
 
