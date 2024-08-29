@@ -27,50 +27,47 @@
         var x = 100;
         var y = 100;
 
-        var color = "#800040";
+        function getRandomColor() {
+            var trans = '0.5';
+            var color = 'rgba(';
+            for (var i = 0; i < 3; i++) {
+                color += Math.floor(Math.random() * 255) + ',';
+            }
+            color += trans + ')';
+            return color;
+        }
 
         function drawRect() {
             ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
-            ctx.fillStyle = color;
-            ctx.fillRect(x, y, 30, 30);
-            ctx.strokeRect(x, y, 30, 30);
+            ctx.fillStyle = getRandomColor();
+            ctx.fillRect(x, y, 50, 50);
+            ctx.strokeRect(x, y, 50, 50);
         }
 
         document.addEventListener('keydown', (e) => {
             switch (e.key) {
                 case "w":
-                    y -= speed
+                    y -= speed;
                     break;
                 case "s":
-                    y += speed
+                    y += speed;
                     break;
                 case "a":
-                    x -= speed
+                    x -= speed;
                     break;
                 case "d":
-                    x += speed
+                    x += speed;
                     break;
             }
             drawRect();
         });
 
-        ctx.fillStyle = color;
-        ctx.fillRect(x, y, 30, 30);
-        ctx.strokeRect(x, y, 30, 30);
+        ctx.fillRect(x, y, 50, 50);
+        ctx.strokeRect(x, y, 50, 50);
 
         // var figura = 0;
 
         // var dibujar = false;
-
-        // function getRandomColor() {
-        //     var trans = '0.5';
-        //     var color = 'rgba(';
-        //     for (var i = 0; i < 3; i++) {
-        //         color += Math.floor(Math.random() * 255) + ',';
-        //     }
-        //     color += trans + ')';
-        //     return color;
-        // }
 
         // document.getElementById("myCanvas").addEventListener('mousedown', function (e) {
         //     dibujar = true;
