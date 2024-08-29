@@ -26,6 +26,8 @@
         const speed = 16;
         var x = 100;
         var y = 100;
+        var h = 50;
+        var v = 50;
 
         function getRandomColor() {
             var trans = '0.5';
@@ -58,6 +60,17 @@
                 case "d":
                     x += speed;
                     break;
+            }
+            if (x < - h) {
+                x = myCanvas.width;
+            } else if (x > myCanvas.width) {
+                x = -h;
+            }
+    
+            if (y < -v) {
+                y = myCanvas.height;
+            } else if (y > myCanvas.height) {
+                y = - v;
             }
             drawRect();
         });
