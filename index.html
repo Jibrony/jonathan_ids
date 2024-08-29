@@ -17,68 +17,103 @@
 </head>
 
 <body>
-    <canvas id="myCanvas" width="1000" height="1000"></canvas>
+    <canvas id="myCanvas" width="600" height="600"></canvas>
     <script type="text/javascript">
         const myCanvas = document.getElementById("myCanvas");
 
         const ctx = myCanvas.getContext("2d");
 
-        var figura = 0;
+        const speed = 16;
+        var x = 100;
+        var y = 100;
 
-        var dibujar = false;
+        var color = "#800040";
 
-        function getRandomColor() {
-            var trans = '0.5';
-            var color = 'rgba(';
-            for (var i = 0; i < 3; i++) {
-                color += Math.floor(Math.random() * 255) + ',';
-            }
-            color += trans + ')';
-            return color;
+        function drawRect() {
+            ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
+            ctx.fillStyle = color;
+            ctx.fillRect(x, y, 30, 30);
+            ctx.strokeRect(x, y, 30, 30);
         }
 
-        document.getElementById("myCanvas").addEventListener('mousedown', function (e) {
-            dibujar = true;
-            Circulo(e);
-        });
-        document.getElementById("myCanvas").addEventListener('mousemove', function (e) {
-            if(dibujar == true) {
-                Circulo(e);
+        document.addEventListener('keydown', (e) => {
+            switch (e.key) {
+                case "w":
+                    y -= speed
+                    break;
+                case "s":
+                    y += speed
+                    break;
+                case "a":
+                    x -= speed
+                    break;
+                case "d":
+                    x += speed
+                    break;
             }
-        });
-        document.getElementById("myCanvas").addEventListener('mouseup', function (e) {
-            dibujar = false;
+            drawRect();
         });
 
-        function Circulo(e) {
-            ctx.beginPath();
-            ctx.arc(e.offsetX, e.offsetY, 5, 0, 2 * Math.PI);
-            ctx.stroke();
-            ctx.fill();
-        }
+        ctx.fillStyle = color;
+        ctx.fillRect(x, y, 30, 30);
+        ctx.strokeRect(x, y, 30, 30);
 
-        document.getElementById("myCanvas").addEventListener('mouseout', function (e) {
-            figura = (figura == 1) ? 2 : 1;
-        });
+        // var figura = 0;
 
-        document.getElementById("myCanvas").addEventListener('mouseover', function (e) {
-            ctx.fillStyle = getRandomColor();
-            ctx.lineWidth = 3;
-            ctx.strokeStyle = "black";
-        });
-        document.getElementById("myCanvas").addEventListener("mousedown", function (e) {
-            {
-                if (figura == 1) {
-                    ctx.beginPath();
-                    ctx.arc(e.offsetX, e.offsetY, 80, 0, 2 * Math.PI);
-                    ctx.stroke();
-                    ctx.fill();
-                } else {
-                    ctx.fillRect(e.offsetX - 75, e.offsetY - 75, 150, 150);
-                    ctx.strokeRect(e.offsetX - 75, e.offsetY - 75, 150, 150);
-                }
-            }
-        })
+        // var dibujar = false;
+
+        // function getRandomColor() {
+        //     var trans = '0.5';
+        //     var color = 'rgba(';
+        //     for (var i = 0; i < 3; i++) {
+        //         color += Math.floor(Math.random() * 255) + ',';
+        //     }
+        //     color += trans + ')';
+        //     return color;
+        // }
+
+        // document.getElementById("myCanvas").addEventListener('mousedown', function (e) {
+        //     dibujar = true;
+        //     Circulo(e);
+        // });
+        // document.getElementById("myCanvas").addEventListener('mousemove', function (e) {
+        //     if(dibujar == true) {
+        //         Circulo(e);
+        //     }
+        // });
+        // document.getElementById("myCanvas").addEventListener('mouseup', function (e) {
+        //     dibujar = false;
+        // });
+
+        // function Circulo(e) {
+        //     ctx.beginPath();
+        //     ctx.arc(e.offsetX, e.offsetY, 5, 0, 2 * Math.PI);
+        //     ctx.stroke();
+        //     ctx.fill();
+        // }
+
+        // document.getElementById("myCanvas").addEventListener('mouseout', function (e) {
+        //     figura = (figura == 1) ? 2 : 1;
+        // });
+
+        // document.getElementById("myCanvas").addEventListener('mouseover', function (e) {
+        //     ctx.fillStyle = getRandomColor();
+        //     ctx.lineWidth = 3;
+        //     ctx.strokeStyle = "black";
+        // });
+        // document.getElementById("myCanvas").addEventListener("mousedown", function (e) {
+        //     {
+        //         if (figura == 1) {
+        //             ctx.beginPath();
+        //             ctx.arc(e.offsetX, e.offsetY, 80, 0, 2 * Math.PI);
+        //             ctx.stroke();
+        //             ctx.fill();
+        //         } else {
+        //             ctx.fillRect(e.offsetX - 75, e.offsetY - 75, 150, 150);
+        //             ctx.strokeRect(e.offsetX - 75, e.offsetY - 75, 150, 150);
+        //         }
+        //     }
+        // })
 
 
         // ctx.fillStyle = "#DC98FF";
