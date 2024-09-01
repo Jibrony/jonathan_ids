@@ -7,7 +7,7 @@
     <title>Canvas</title>
     <style>
         body {
-            background-color: gray;
+            background-color: white;
         }
 
         canvas {
@@ -32,145 +32,284 @@
 </head>
 
 <body>
-    <h1>Kirby</h1>
-    <canvas id="myCanvas" width="400" height="400"></canvas>
+    <h1>Dream</h1>
+    <canvas id="myCanvas" width="800" height="600"></canvas>
     <p>Andrey Julian Gutierrez Arce</p>
     <script type="text/javascript">
         const myCanvas = document.getElementById("myCanvas");
         const ctx = myCanvas.getContext("2d");
 
-        var centerX = myCanvas.width / 2;
-        var centerY = myCanvas.height / 2;
+        // Cielo
+        ctx.fillStyle = "#87CEEB";
+        ctx.fillRect(0, 0, myCanvas.width, myCanvas.height);
 
-        //Cuerpo sombra
+        // Sol
         ctx.beginPath();
-        ctx.arc(centerX, centerY, 100, 0, 2 * Math.PI, false);
-        ctx.fillStyle = "#FF1493"; // Color rosa fuerte
+        ctx.arc(100, 100, 50, 0, 2 * Math.PI, false);
+        ctx.fillStyle = "#FFD700";
         ctx.fill();
 
+        // Nubes
+        function drawCloud(x, y) {
+            ctx.beginPath();
+            ctx.arc(x, y, 30, 0, 2 * Math.PI, false);
+            ctx.arc(x + 40, y, 40, 0, 2 * Math.PI, false);
+            ctx.arc(x + 90, y, 30, 0, 2 * Math.PI, false);
+            ctx.fillStyle = "#FFFFFF";
+            ctx.fill();
+        }
+
+        drawCloud(230, 120);
+        drawCloud(550, 150);
+
+        // Suelo
+        ctx.fillStyle = "#32CD32";
+        ctx.fillRect(0, 400, myCanvas.width, 200);
+
+        // Base casa
+        ctx.fillStyle = "#D4847D";
+        ctx.fillRect(300, 300, 200, 150);
+
+        // Techo
         ctx.beginPath();
-        ctx.arc(centerX + 1, centerY - 10, 100, 0, 2 * Math.PI, false);
-        ctx.fillStyle = "#FF1493"; // Color rosa fuerte
+        ctx.moveTo(275, 300);
+        ctx.lineTo(525, 300);
+        ctx.lineTo(400, 200);
+        ctx.closePath();
+        ctx.fillStyle = "#654321";
         ctx.fill();
 
-        //Cuerpo base
-        ctx.beginPath();
-        ctx.arc(centerX - 5, centerY - 10, 100, 0, 2 * Math.PI, false);
-        ctx.fillStyle = "#FF6EC7"; // Color rosa
-        ctx.fill();
-
-        //Ojos
-        ctx.beginPath();
-        ctx.ellipse(centerX - 35, centerY - 30, 20, 35, 0, 0, 2 * Math.PI);
-        ctx.fillStyle = "#000000";
-        ctx.fill();
-
-        ctx.beginPath();
-        ctx.ellipse(centerX + 35, centerY - 30, 20, 35, 0, 0, 2 * Math.PI);
-        ctx.fillStyle = "#000000";
-        ctx.fill();
-
-        //Brillo ojos
-        ctx.beginPath();
-        ctx.arc(centerX - 33, centerY - 38, 8, 0, 2 * Math.PI, false);
-        ctx.fillStyle = "gray";
-        ctx.fill();
-
-        ctx.beginPath();
-        ctx.arc(centerX - 35, centerY - 40, 8, 0, 2 * Math.PI, false);
+        // Puerta
         ctx.fillStyle = "#FFFFFF";
+        ctx.fillRect(370, 370, 60, 80);
+
+        // Manija
+        ctx.beginPath();
+        ctx.arc(420, 420, 5, 0, 2 * Math.PI, false);
+        ctx.fillStyle = "#FFD700";
         ctx.fill();
 
-        ctx.beginPath();
-        ctx.arc(centerX + 37, centerY - 38, 8, 0, 2 * Math.PI, false);
-        ctx.fillStyle = "gray";
-        ctx.fill();
+        // Ventana
+        ctx.fillStyle = "#ADD8E6";
+        ctx.fillRect(330, 320, 40, 40);
+        ctx.fillRect(430, 320, 40, 40);
 
-        ctx.beginPath();
-        ctx.arc(centerX + 35, centerY - 40, 8, 0, 2 * Math.PI, false);
-        ctx.fillStyle = "#FFFFFF";
-        ctx.fill();
-
-        //Brillo ojos azul
-        ctx.beginPath();
-        ctx.arc(centerX - 34, centerY - 8, 10, 0, 2 * Math.PI, false);
-        ctx.fillStyle = "#183FB4";
-        ctx.fill();
-
-        ctx.beginPath();
-        ctx.arc(centerX - 35, centerY - 10, 10, 0, 2 * Math.PI, false);
-        ctx.fillStyle = "#4169E1";
-        ctx.fill();
-
-        ctx.beginPath();
-        ctx.arc(centerX + 36, centerY - 8, 10, 0, 2 * Math.PI, false);
-        ctx.fillStyle = "#183FB4";
-        ctx.fill();
-
-        ctx.beginPath();
-        ctx.arc(centerX + 35, centerY - 10, 10, 0, 2 * Math.PI, false);
-        ctx.fillStyle = "#4169E1";
-        ctx.fill();
-
-        // Boca
-        ctx.beginPath();
-        ctx.arc(centerX, centerY + 25, 35, 0, Math.PI, false);
+        // Marco de la ventana
+        ctx.strokeStyle = "#FFFFFF";
         ctx.lineWidth = 5;
-        ctx.strokeStyle = "#FF1493";
-        ctx.stroke();
-        ctx.fillStyle = "#FF6347";
-        ctx.fill();
+        ctx.strokeRect(330, 320, 40, 40);
+        ctx.strokeRect(430, 320, 40, 40);
 
-        //Patas
-        ctx.beginPath();
-        ctx.ellipse(centerX - 64, centerY + 86, 50, 30, Math.PI / 4, 0, 2 * Math.PI);
-        ctx.fillStyle = "#CC0000";
-        ctx.fill();
+        // Arbol
+        ctx.fillStyle = "#8B4513";
+        ctx.fillRect(600, 330, 20, 70);
 
         ctx.beginPath();
-        ctx.ellipse(centerX - 70, centerY + 85, 50, 30, Math.PI / 4, 0, 2 * Math.PI);
-        ctx.fillStyle = "#FF0000";
+        ctx.arc(610, 310, 50, 0, 2 * Math.PI, false);
+        ctx.fillStyle = "#228B22";
         ctx.fill();
 
         ctx.beginPath();
-        ctx.ellipse(centerX + 76, centerY + 85, 50, 30, -Math.PI / 4, 0, 2 * Math.PI);
-        ctx.fillStyle = "#CC0000";
+        ctx.arc(635, 290, 50, 0, 2 * Math.PI, false);
+        ctx.fillStyle = "#228B22";
         ctx.fill();
 
         ctx.beginPath();
-        ctx.ellipse(centerX + 70, centerY + 85, 50, 30, -Math.PI / 4, 0, 2 * Math.PI);
-        ctx.fillStyle = "#FF0000";
-        ctx.fill();
-
-        //Brazos
-        ctx.beginPath();
-        ctx.ellipse(centerX - 108, centerY + 5, 30, 50, Math.PI / 4, 0, 2 * Math.PI);
-        ctx.fillStyle = "#FF1493"; //Rosa fuerte
+        ctx.arc(585, 290, 50, 0, 2 * Math.PI, false);
+        ctx.fillStyle = "#228B22";
         ctx.fill();
 
         ctx.beginPath();
-        ctx.ellipse(centerX - 110, centerY, 30, 50, Math.PI / 4, 0, 2 * Math.PI);
-        ctx.fillStyle = "#FF6EC7";
+        ctx.arc(610, 265, 50, 0, 2 * Math.PI, false);
+        ctx.fillStyle = "#228B22";
         ctx.fill();
 
+        // Personaje andy
         ctx.beginPath();
-        ctx.ellipse(centerX - 102, centerY, 30, 50, Math.PI / 4, 0, 2 * Math.PI);
-        ctx.fillStyle = "#FF6EC7";
+        ctx.arc(150, 400, 30, 0, 2 * Math.PI); // Cabeza
+        ctx.fillStyle = 'peachpuff';
         ctx.fill();
 
+        // Cabello andy
         ctx.beginPath();
-        ctx.ellipse(centerX + 114, centerY, 30, 50, -Math.PI / 4, 0, 2 * Math.PI);
-        ctx.fillStyle = "#FF1493"; // Rosa fuerte
+        ctx.arc(150, 380, 25, 0, Math.PI, true);
+        ctx.fillStyle = 'black';
         ctx.fill();
 
+        // Cuerpo andy
+        ctx.fillStyle = 'blue';
+        ctx.fillRect(130, 430, 40, 60);
+
+        // Piernas andy
+        ctx.fillStyle = 'black';
+        ctx.fillRect(130, 490, 15, 40);
+        ctx.fillRect(155, 490, 15, 40);
+
+        // Personaje mi amore
         ctx.beginPath();
-        ctx.ellipse(centerX + 110, centerY, 30, 50, -Math.PI / 4, 0, 2 * Math.PI);
-        ctx.fillStyle = "#FF6EC7";
+        ctx.arc(225, 400, 30, 0, 2 * Math.PI); // Cabeza
+        ctx.fillStyle = 'peachpuff';
         ctx.fill();
 
-        ctx.font = "20px Arial";
-        ctx.fillStyle = "#000000";
-        ctx.fillText("Andrey Julián Gutiérrez Arce", centerX, canvas.height + 30);
+        // Cabello mi amore
+        ctx.beginPath();
+        ctx.arc(225, 380, 25, 0, Math.PI, true);
+        ctx.fillStyle = 'darkred';
+        ctx.fill();
+
+        // Cuerpo mi amore
+        ctx.fillStyle = 'pink';
+        ctx.fillRect(205, 430, 40, 60);
+
+        // Piernas mi amore
+        ctx.fillStyle = 'black';
+        ctx.fillRect(205, 490, 15, 40);
+        ctx.fillRect(230, 490, 15, 40);
+
+        // Corazon <3 
+        ctx.beginPath();
+        ctx.moveTo(172 + 15, 400 + 10);
+        ctx.bezierCurveTo(172 + 15, 400 + 9, 172 + 14, 400 + 6, 172 + 10, 400 + 6);
+        ctx.bezierCurveTo(172 + 4, 400 + 6, 172 + 4, 400 + 12.5, 172 + 4, 400 + 12.5);
+        ctx.bezierCurveTo(172 + 4, 400 + 16, 172 + 8, 400 + 20, 172 + 15, 400 + 24);
+        ctx.bezierCurveTo(172 + 22, 400 + 20, 172 + 26, 400 + 16, 172 + 26, 400 + 12.5);
+        ctx.bezierCurveTo(172 + 26, 400 + 12.5, 172 + 26, 400 + 6, 172 + 20, 400 + 6);
+        ctx.bezierCurveTo(172 + 16, 400 + 6, 172 + 15, 400 + 9, 172 + 15, 400 + 10);
+        ctx.fillStyle = "red";
+        ctx.fill();
+
+        // var centerX = myCanvas.width / 2;
+        // var centerY = myCanvas.height / 2;
+
+        // //Cuerpo sombra
+        // ctx.beginPath();
+        // ctx.arc(centerX, centerY, 100, 0, 2 * Math.PI, false);
+        // ctx.fillStyle = "#FF1493"; // Color rosa fuerte
+        // ctx.fill();
+
+        // ctx.beginPath();
+        // ctx.arc(centerX + 1, centerY - 10, 100, 0, 2 * Math.PI, false);
+        // ctx.fillStyle = "#FF1493"; // Color rosa fuerte
+        // ctx.fill();
+
+        // //Cuerpo base
+        // ctx.beginPath();
+        // ctx.arc(centerX - 5, centerY - 10, 100, 0, 2 * Math.PI, false);
+        // ctx.fillStyle = "#FF6EC7"; // Color rosa
+        // ctx.fill();
+
+        // //Ojos
+        // ctx.beginPath();
+        // ctx.ellipse(centerX - 35, centerY - 30, 20, 35, 0, 0, 2 * Math.PI);
+        // ctx.fillStyle = "#000000";
+        // ctx.fill();
+
+        // ctx.beginPath();
+        // ctx.ellipse(centerX + 35, centerY - 30, 20, 35, 0, 0, 2 * Math.PI);
+        // ctx.fillStyle = "#000000";
+        // ctx.fill();
+
+        // //Brillo ojos
+        // ctx.beginPath();
+        // ctx.arc(centerX - 33, centerY - 38, 8, 0, 2 * Math.PI, false);
+        // ctx.fillStyle = "gray";
+        // ctx.fill();
+
+        // ctx.beginPath();
+        // ctx.arc(centerX - 35, centerY - 40, 8, 0, 2 * Math.PI, false);
+        // ctx.fillStyle = "#FFFFFF";
+        // ctx.fill();
+
+        // ctx.beginPath();
+        // ctx.arc(centerX + 37, centerY - 38, 8, 0, 2 * Math.PI, false);
+        // ctx.fillStyle = "gray";
+        // ctx.fill();
+
+        // ctx.beginPath();
+        // ctx.arc(centerX + 35, centerY - 40, 8, 0, 2 * Math.PI, false);
+        // ctx.fillStyle = "#FFFFFF";
+        // ctx.fill();
+
+        // //Brillo ojos azul
+        // ctx.beginPath();
+        // ctx.arc(centerX - 34, centerY - 8, 10, 0, 2 * Math.PI, false);
+        // ctx.fillStyle = "#183FB4";
+        // ctx.fill();
+
+        // ctx.beginPath();
+        // ctx.arc(centerX - 35, centerY - 10, 10, 0, 2 * Math.PI, false);
+        // ctx.fillStyle = "#4169E1";
+        // ctx.fill();
+
+        // ctx.beginPath();
+        // ctx.arc(centerX + 36, centerY - 8, 10, 0, 2 * Math.PI, false);
+        // ctx.fillStyle = "#183FB4";
+        // ctx.fill();
+
+        // ctx.beginPath();
+        // ctx.arc(centerX + 35, centerY - 10, 10, 0, 2 * Math.PI, false);
+        // ctx.fillStyle = "#4169E1";
+        // ctx.fill();
+
+        // // Boca
+        // ctx.beginPath();
+        // ctx.arc(centerX, centerY + 25, 35, 0, Math.PI, false);
+        // ctx.lineWidth = 5;
+        // ctx.strokeStyle = "#FF1493";
+        // ctx.stroke();
+        // ctx.fillStyle = "#FF6347";
+        // ctx.fill();
+
+        // //Patas
+        // ctx.beginPath();
+        // ctx.ellipse(centerX - 64, centerY + 86, 50, 30, Math.PI / 4, 0, 2 * Math.PI);
+        // ctx.fillStyle = "#CC0000";
+        // ctx.fill();
+
+        // ctx.beginPath();
+        // ctx.ellipse(centerX - 70, centerY + 85, 50, 30, Math.PI / 4, 0, 2 * Math.PI);
+        // ctx.fillStyle = "#FF0000";
+        // ctx.fill();
+
+        // ctx.beginPath();
+        // ctx.ellipse(centerX + 76, centerY + 85, 50, 30, -Math.PI / 4, 0, 2 * Math.PI);
+        // ctx.fillStyle = "#CC0000";
+        // ctx.fill();
+
+        // ctx.beginPath();
+        // ctx.ellipse(centerX + 70, centerY + 85, 50, 30, -Math.PI / 4, 0, 2 * Math.PI);
+        // ctx.fillStyle = "#FF0000";
+        // ctx.fill();
+
+        // //Brazos
+        // ctx.beginPath();
+        // ctx.ellipse(centerX - 108, centerY + 5, 30, 50, Math.PI / 4, 0, 2 * Math.PI);
+        // ctx.fillStyle = "#FF1493"; //Rosa fuerte
+        // ctx.fill();
+
+        // ctx.beginPath();
+        // ctx.ellipse(centerX - 110, centerY, 30, 50, Math.PI / 4, 0, 2 * Math.PI);
+        // ctx.fillStyle = "#FF6EC7";
+        // ctx.fill();
+
+        // ctx.beginPath();
+        // ctx.ellipse(centerX - 102, centerY, 30, 50, Math.PI / 4, 0, 2 * Math.PI);
+        // ctx.fillStyle = "#FF6EC7";
+        // ctx.fill();
+
+        // ctx.beginPath();
+        // ctx.ellipse(centerX + 114, centerY, 30, 50, -Math.PI / 4, 0, 2 * Math.PI);
+        // ctx.fillStyle = "#FF1493"; // Rosa fuerte
+        // ctx.fill();
+
+        // ctx.beginPath();
+        // ctx.ellipse(centerX + 110, centerY, 30, 50, -Math.PI / 4, 0, 2 * Math.PI);
+        // ctx.fillStyle = "#FF6EC7";
+        // ctx.fill();
+
+        // ctx.font = "20px Arial";
+        // ctx.fillStyle = "#000000";
+        // ctx.fillText("Andrey Julián Gutiérrez Arce", centerX, canvas.height + 30);
     </script>
 
 
