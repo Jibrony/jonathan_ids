@@ -13,11 +13,169 @@
         canvas {
             background-color: white;
         }
+
+        h1 {
+            font-family: Arial, sans-serif;
+            font-size: 30px;
+            font-weight: bold;
+            color: #000000;
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-family: Arial, sans-serif;
+            font-size: 20px;
+            color: #000000;
+            margin-top: 10px;
+        }
     </style>
 </head>
 
 <body>
-    <canvas id="myCanvas" width="600" height="600"></canvas>
+    <h1>Kirby</h1>
+    <canvas id="myCanvas" width="400" height="400"></canvas>
+    <p>Andrey Julian Gutierrez Arce</p>
+    <script type="text/javascript">
+        const myCanvas = document.getElementById("myCanvas");
+        const ctx = myCanvas.getContext("2d");
+
+        var centerX = myCanvas.width / 2;
+        var centerY = myCanvas.height / 2;
+
+        //Cuerpo sombra
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, 100, 0, 2 * Math.PI, false);
+        ctx.fillStyle = "#FF1493"; // Color rosa fuerte
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.arc(centerX + 1, centerY - 10, 100, 0, 2 * Math.PI, false);
+        ctx.fillStyle = "#FF1493"; // Color rosa fuerte
+        ctx.fill();
+
+        //Cuerpo base
+        ctx.beginPath();
+        ctx.arc(centerX - 5, centerY - 10, 100, 0, 2 * Math.PI, false);
+        ctx.fillStyle = "#FF6EC7"; // Color rosa
+        ctx.fill();
+
+        //Ojos
+        ctx.beginPath();
+        ctx.ellipse(centerX - 35, centerY - 30, 20, 35, 0, 0, 2 * Math.PI);
+        ctx.fillStyle = "#000000";
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.ellipse(centerX + 35, centerY - 30, 20, 35, 0, 0, 2 * Math.PI);
+        ctx.fillStyle = "#000000";
+        ctx.fill();
+
+        //Brillo ojos
+        ctx.beginPath();
+        ctx.arc(centerX - 33, centerY - 38, 8, 0, 2 * Math.PI, false);
+        ctx.fillStyle = "gray";
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.arc(centerX - 35, centerY - 40, 8, 0, 2 * Math.PI, false);
+        ctx.fillStyle = "#FFFFFF";
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.arc(centerX + 37, centerY - 38, 8, 0, 2 * Math.PI, false);
+        ctx.fillStyle = "gray";
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.arc(centerX + 35, centerY - 40, 8, 0, 2 * Math.PI, false);
+        ctx.fillStyle = "#FFFFFF";
+        ctx.fill();
+
+        //Brillo ojos azul
+        ctx.beginPath();
+        ctx.arc(centerX - 34, centerY - 8, 10, 0, 2 * Math.PI, false);
+        ctx.fillStyle = "#183FB4";
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.arc(centerX - 35, centerY - 10, 10, 0, 2 * Math.PI, false);
+        ctx.fillStyle = "#4169E1";
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.arc(centerX + 36, centerY - 8, 10, 0, 2 * Math.PI, false);
+        ctx.fillStyle = "#183FB4";
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.arc(centerX + 35, centerY - 10, 10, 0, 2 * Math.PI, false);
+        ctx.fillStyle = "#4169E1";
+        ctx.fill();
+
+        // Boca
+        ctx.beginPath();
+        ctx.arc(centerX, centerY + 25, 35, 0, Math.PI, false);
+        ctx.lineWidth = 5;
+        ctx.strokeStyle = "#FF1493";
+        ctx.stroke();
+        ctx.fillStyle = "#FF6347";
+        ctx.fill();
+
+        //Patas
+        ctx.beginPath();
+        ctx.ellipse(centerX - 64, centerY + 86, 50, 30, Math.PI / 4, 0, 2 * Math.PI);
+        ctx.fillStyle = "#CC0000";
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.ellipse(centerX - 70, centerY + 85, 50, 30, Math.PI / 4, 0, 2 * Math.PI);
+        ctx.fillStyle = "#FF0000";
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.ellipse(centerX + 76, centerY + 85, 50, 30, -Math.PI / 4, 0, 2 * Math.PI);
+        ctx.fillStyle = "#CC0000";
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.ellipse(centerX + 70, centerY + 85, 50, 30, -Math.PI / 4, 0, 2 * Math.PI);
+        ctx.fillStyle = "#FF0000";
+        ctx.fill();
+
+        //Brazos
+        ctx.beginPath();
+        ctx.ellipse(centerX - 108, centerY + 5, 30, 50, Math.PI / 4, 0, 2 * Math.PI);
+        ctx.fillStyle = "#FF1493"; //Rosa fuerte
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.ellipse(centerX - 110, centerY, 30, 50, Math.PI / 4, 0, 2 * Math.PI);
+        ctx.fillStyle = "#FF6EC7";
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.ellipse(centerX - 102, centerY, 30, 50, Math.PI / 4, 0, 2 * Math.PI);
+        ctx.fillStyle = "#FF6EC7";
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.ellipse(centerX + 114, centerY, 30, 50, -Math.PI / 4, 0, 2 * Math.PI);
+        ctx.fillStyle = "#FF1493"; // Rosa fuerte
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.ellipse(centerX + 110, centerY, 30, 50, -Math.PI / 4, 0, 2 * Math.PI);
+        ctx.fillStyle = "#FF6EC7";
+        ctx.fill();
+
+        ctx.font = "20px Arial";
+        ctx.fillStyle = "#000000";
+        ctx.fillText("Andrey Julián Gutiérrez Arce", centerX, canvas.height + 30);
+    </script>
+
+
+
+    <!-- <canvas id="myCanvas" width="600" height="600"></canvas>
     <p id="Cont">Speed: 4</p>
     <script type="text/javascript">
         const myCanvas = document.getElementById("myCanvas");
@@ -114,9 +272,9 @@
         ctx.fillRect(x, y, 50, 50);
         ctx.strokeRect(x, y, 50, 50);
 
-        GameLoop();
+        GameLoop(); -->
 
-        // var figura = 0;
+    <!-- // var figura = 0;
 
         // var dibujar = false;
 
@@ -242,9 +400,9 @@
         // grdRadial.addColorStop(1, "black");
 
         // ctx.fillStyle = grdRadial;
-        // ctx.fillRect(550, 10, 150, 100);
+        // ctx.fillRect(550, 10, 150, 100); -->
 
-    </script>
+    <!-- </script> -->
 </body>
 
 </html>
