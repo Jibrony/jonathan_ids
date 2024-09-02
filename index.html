@@ -11,7 +11,7 @@
         }
 
         canvas {
-            background-color: skyblue;
+            background-color: darkblue;
         }
 
         h1 {
@@ -32,314 +32,455 @@
 </head>
 
 <body>
-    <h1>Mario Bros</h1>
+    <h1>Sonic</h1>
     <canvas id="myCanvas" width="1200" height="700"></canvas>
     <p>Andrey Julian Gutierrez Arce</p>
     <script type="text/javascript">
         const myCanvas = document.getElementById("myCanvas");
         const ctx = myCanvas.getContext("2d");
 
-        // Suelo
-        ctx.fillStyle = "#FF9765";
-        ctx.strokeStyle = "#5E2816";
-        ctx.lineWidth = 10;
-        ctx.fillRect(0, 625, 1200, 100);
-        ctx.strokeRect(-8, 660, 1212, 100);
+        const squareSize = 50; // Tamaño de cada cuadro
+        const rows = myCanvas.height / squareSize;
+        const cols = myCanvas.width / squareSize;
 
-        ctx.fillStyle = "#FFC8BC";
-        ctx.strokeStyle = "#5E2816";
-        ctx.lineWidth = 10;
-        ctx.fillRect(0, 625, 1200, 30);
-        ctx.strokeRect(-8, 625, 1212, 30);
+        function drawCheckerboard() {
+            for (let row = 0; row < rows; row++) {
+                for (let col = 0; col < cols; col++) {
+                    // Alternar color entre negro y blanco
+                    ctx.fillStyle = (row + col) % 2 === 0 ? "#601F00" : "#C15F01";
+                    // Dibujar el cuadro
+                    ctx.fillRect(col * squareSize, row * squareSize, squareSize, squareSize);
+                }
+            }
+        }
 
-        // Bloques
-        ctx.fillStyle = "#FF8751";
-        ctx.strokeStyle = "black";
-        ctx.lineWidth = 5;
-        ctx.fillRect(50, 300, 75, 75);
-        ctx.strokeRect(50, 300, 75, 75);
-
-        ctx.fillRect(200, 50, 75, 75);
-        ctx.strokeRect(200, 50, 75, 75);
-
-        ctx.fillRect(275, 50, 75, 75);
-        ctx.strokeRect(275, 50, 75, 75);
-
-        ctx.fillRect(1050, 250, 75, 75);
-        ctx.strokeRect(1050, 250, 75, 75);
-
-
-        // Bloques Fondo
-        // Bloque Azul
-        ctx.fillStyle = "black";
-        ctx.fillRect(500, 245, 225, 375);
-
-        ctx.fillStyle = "#70C1FF";
-        ctx.strokeStyle = "black";
-        ctx.lineWidth = 5;
-        ctx.fillRect(470, 195, 225, 425);
-        ctx.strokeRect(470, 195, 225, 425);
-
-        ctx.fillStyle = "#0093E6";
-        ctx.fillRect(672, 198, 20, 420);
-
-        ctx.fillStyle = "#0093E6";
-        ctx.fillRect(472, 597, 216, 20);
-
-        // Bloque rosa
-        ctx.fillStyle = "black";
-        ctx.fillRect(365, 395, 225, 225);
-
-        ctx.fillStyle = "#FFBFB5";
-        ctx.strokeStyle = "black";
-        ctx.lineWidth = 5;
-        ctx.fillRect(300, 345, 225, 275);
-        ctx.strokeRect(300, 345, 225, 275);
-
-        ctx.fillStyle = "#F78A63";
-        ctx.fillRect(502, 348, 20, 269);
-
-        ctx.fillStyle = "#F78A63";
-        ctx.fillRect(303, 597, 215, 20);
-
-        // Bloque verde
-        ctx.fillStyle = "#00DC5B";
-        ctx.strokeStyle = "black";
-        ctx.lineWidth = 5;
-        ctx.fillRect(975, 445, 375, 175);
-        ctx.strokeRect(975, 445, 375, 175);
-
-        ctx.fillStyle = "#0A601F";
-        ctx.fillRect(977, 597, 230, 20);
-
-        // Tuberia
-        ctx.fillStyle = "#00E455";
-        ctx.strokeStyle = "black";
-        ctx.lineWidth = 5;
-        ctx.fillRect(790, 470, 75, 150);
-        ctx.strokeRect(790, 470, 75, 150);
-
-        ctx.fillStyle = "#00E455";
-        ctx.strokeStyle = "black";
-        ctx.lineWidth = 5;
-        ctx.fillRect(775, 470, 105, 55);
-        ctx.strokeRect(775, 470, 105, 55);
-
-        // Tuercas azul
-        ctx.strokeStyle = "black";
-        ctx.fillStyle = "#BDCBCD";
-        ctx.lineWidth = 6;
-        ctx.beginPath();
-        ctx.arc(490, 215, 10, 0, 2 * Math.PI);
-        ctx.stroke();
-        ctx.fill();
-
-        ctx.lineWidth = 3;
-        ctx.beginPath();
-        ctx.moveTo(497, 208);  // Punto inicial de la línea (arriba a la derecha)
-        ctx.lineTo(483, 222);  // Punto final de la línea (abajo a la izquierda)
-        ctx.stroke();
-
-        ctx.strokeStyle = "black";
-        ctx.fillStyle = "#BDCBCD";
-        ctx.lineWidth = 6;
-        ctx.beginPath();
-        ctx.arc(665, 215, 10, 0, 2 * Math.PI);
-        ctx.stroke();
-        ctx.fill();
-
-        ctx.lineWidth = 3;
-        ctx.beginPath();
-        ctx.moveTo(672, 208);  // Punto inicial de la línea (arriba a la derecha)
-        ctx.lineTo(658, 222);  // Punto final de la línea (abajo a la izquierda)
-        ctx.stroke();
-
-        // Tuercas rosa
-        ctx.strokeStyle = "black";
-        ctx.fillStyle = "#BDCBCD";
-        ctx.lineWidth = 6;
-        ctx.beginPath();
-        ctx.arc(320, 368, 10, 0, 2 * Math.PI);
-        ctx.stroke();
-        ctx.fill();
-
-        ctx.lineWidth = 3;
-        ctx.beginPath();
-        ctx.moveTo(327, 361);  // Punto inicial de la línea (arriba a la derecha)
-        ctx.lineTo(313, 375);  // Punto final de la línea (abajo a la izquierda)
-        ctx.stroke();
-
-        ctx.strokeStyle = "black";
-        ctx.fillStyle = "#BDCBCD";
-        ctx.lineWidth = 6;
-        ctx.beginPath();
-        ctx.arc(495, 368, 10, 0, 2 * Math.PI);
-        ctx.stroke();
-        ctx.fill();
-
-        ctx.lineWidth = 3;
-        ctx.beginPath();
-        ctx.moveTo(502, 361);  // Punto inicial de la línea (arriba a la derecha)
-        ctx.lineTo(488, 375);  // Punto final de la línea (abajo a la izquierda)
-        ctx.stroke();
-
-        // Tuercas rosa abajo
-        ctx.strokeStyle = "black";
-        ctx.fillStyle = "#BDCBCD";
-        ctx.lineWidth = 6;
-        ctx.beginPath();
-        ctx.arc(320, 595, 10, 0, 2 * Math.PI);
-        ctx.stroke();
-        ctx.fill();
-
-        ctx.lineWidth = 3;
-        ctx.beginPath();
-        ctx.moveTo(327, 588);  // Punto inicial de la línea (arriba a la derecha)
-        ctx.lineTo(313, 602);  // Punto final de la línea (abajo a la izquierda)
-        ctx.stroke();
-
-        ctx.strokeStyle = "black";
-        ctx.fillStyle = "#BDCBCD";
-        ctx.lineWidth = 6;
-        ctx.beginPath();
-        ctx.arc(495, 595, 10, 0, 2 * Math.PI);
-        ctx.stroke();
-        ctx.fill();
-
-        ctx.lineWidth = 3;
-        ctx.beginPath();
-        ctx.moveTo(502, 588);  // Punto inicial de la línea (arriba a la derecha)
-        ctx.lineTo(488, 602);  // Punto final de la línea (abajo a la izquierda)
-        ctx.stroke();
-
-        // Tuercas verdes
-        ctx.strokeStyle = "black";
-        ctx.fillStyle = "#BDCBCD";
-        ctx.lineWidth = 6;
-        ctx.beginPath();
-        ctx.arc(1000, 465, 10, 0, 2 * Math.PI);
-        ctx.stroke();
-        ctx.fill();
-
-        ctx.lineWidth = 3;
-        ctx.beginPath();
-        ctx.moveTo(1007, 458);  // Punto inicial de la línea (arriba a la derecha)
-        ctx.lineTo(993, 472);  // Punto final de la línea (abajo a la izquierda)
-        ctx.stroke();
+        drawCheckerboard();
         
-        ctx.strokeStyle = "black";
-        ctx.fillStyle = "#BDCBCD";
-        ctx.lineWidth = 6;
-        ctx.beginPath();
-        ctx.arc(1000, 595, 10, 0, 2 * Math.PI);
-        ctx.stroke();
-        ctx.fill();
+        // Fondo
+        ctx.fillStyle = "#20009F";
+        ctx.fillRect(0, 0, 1200, 500);
 
-        ctx.lineWidth = 3;
-        ctx.beginPath();
-        ctx.moveTo(1007, 588);  // Punto inicial de la línea (arriba a la derecha)
-        ctx.lineTo(993, 602);  // Punto final de la línea (abajo a la izquierda)
-        ctx.stroke();
+        // Pasto
+        ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
+        ctx.fillRect(0, 525, 1200, 50);
 
-        // Bloques flotantes puntitos
-        ctx.fillStyle = "black";
-        ctx.beginPath();
-        ctx.arc(60, 310, 3, 0, 2 * Math.PI);
-        ctx.fill();
+        ctx.fillStyle = "#045F01";
+        ctx.fillRect(0, 500, 1200, 25);
 
-        ctx.fillStyle = "black";
-        ctx.beginPath();
-        ctx.arc(115, 310, 3, 0, 2 * Math.PI);
-        ctx.fill();
+        ctx.fillStyle = "#40A000";
+        ctx.fillRect(0, 475, 1200, 25);
 
-        ctx.fillStyle = "black";
-        ctx.beginPath();
-        ctx.arc(60, 365, 3, 0, 2 * Math.PI);
-        ctx.fill();
+        ctx.fillStyle = "#7EE000";
+        ctx.fillRect(0, 450, 1200, 25);
 
-        ctx.fillStyle = "black";
-        ctx.beginPath();
-        ctx.arc(115, 365, 3, 0, 2 * Math.PI);
-        ctx.fill();
+        //  Arbol de sonic
+        var palma = new Image();
+        palma.src = "palma.png";
 
-        // Cudrados arriba
-        ctx.fillStyle = "black";
-        ctx.beginPath();
-        ctx.arc(210, 60, 3, 0, 2 * Math.PI);
-        ctx.fill();
-
-        ctx.fillStyle = "black";
-        ctx.beginPath();
-        ctx.arc(265 , 60, 3, 0, 2 * Math.PI);
-        ctx.fill();
-
-        ctx.fillStyle = "black";
-        ctx.beginPath();
-        ctx.arc(210, 115, 3, 0, 2 * Math.PI);
-        ctx.fill();
-
-        ctx.fillStyle = "black";
-        ctx.beginPath();
-        ctx.arc(265, 115, 3, 0, 2 * Math.PI);
-        ctx.fill();
-
-        ctx.fillStyle = "black";
-        ctx.beginPath();
-        ctx.arc(285, 60, 3, 0, 2 * Math.PI);
-        ctx.fill();
-
-        ctx.fillStyle = "black";
-        ctx.beginPath();
-        ctx.arc(340 , 60, 3, 0, 2 * Math.PI);
-        ctx.fill();
-
-        ctx.fillStyle = "black";
-        ctx.beginPath();
-        ctx.arc(285, 115, 3, 0, 2 * Math.PI);
-        ctx.fill();
-
-        ctx.fillStyle = "black";
-        ctx.beginPath();
-        ctx.arc(340, 115, 3, 0, 2 * Math.PI);
-        ctx.fill();
-
-        // Cuadro final
-        ctx.fillStyle = "black";
-        ctx.beginPath();
-        ctx.arc(1060, 260, 3, 0, 2 * Math.PI);
-        ctx.fill();
-
-        ctx.fillStyle = "black";
-        ctx.beginPath();
-        ctx.arc(1115 , 260, 3, 0, 2 * Math.PI);
-        ctx.fill();
-
-        ctx.fillStyle = "black";
-        ctx.beginPath();
-        ctx.arc(1060, 313, 3, 0, 2 * Math.PI);
-        ctx.fill();
-
-        ctx.fillStyle = "black";
-        ctx.beginPath();
-        ctx.arc(1115, 313, 3, 0, 2 * Math.PI);
-        ctx.fill();
-
-
-        var mario = new Image();
-        var pirana = new Image();
-        mario.src = "mario.png";
-        pirana.src = "pirana.png";
-
-        mario.onload = function () {
-            var newWidth = mario.width * 0.60;  // Reduce el tamaño al 50%
-            var newHeight = mario.height * 0.60; // Reduce el tamaño al 50%
-            ctx.drawImage(mario, 590, 510, newWidth, newHeight);
+        palma.onload = function () {
+            ctx.drawImage(palma, 800, 75);
+            ctx.drawImage(palma, -50, 75);
         };
-        pirana.onload = function () {
-            var newWidth = pirana.width * 0.18;  // Reduce el tamaño al 50%
-            var newHeight = pirana.height * 0.18; // Reduce el tamaño al 50%
-            ctx.drawImage(pirana, 780, 385, newWidth, newHeight);
+
+        // Girasol
+        // Tallo
+        ctx.fillStyle = "#40A000";
+        ctx.fillRect(1045, 350, 10, 100);
+        // Hojas
+        ctx.fillStyle = "#E0E000";
+        ctx.beginPath();
+        ctx.arc(1038, 376, 15, 0, 2 * Math.PI);
+        ctx.fill();
+
+        ctx.fillStyle = "#E0E000";
+        ctx.beginPath();
+        ctx.arc(1022, 360, 15, 0, 2 * Math.PI);
+        ctx.fill();
+
+        ctx.fillStyle = "#E0E000";
+        ctx.beginPath();
+        ctx.arc(1025, 335, 15, 0, 2 * Math.PI);
+        ctx.fill();
+
+        ctx.fillStyle = "#E0E000";
+        ctx.beginPath();
+        ctx.arc(1040, 322, 15, 0, 2 * Math.PI);
+        ctx.fill();
+
+        ctx.fillStyle = "#E0E000";
+        ctx.beginPath();
+        ctx.arc(1062, 325, 15, 0, 2 * Math.PI);
+        ctx.fill();
+
+        ctx.fillStyle = "#E0E000";
+        ctx.beginPath();
+        ctx.arc(1075, 340, 15, 0, 2 * Math.PI);
+        ctx.fill();
+
+        ctx.fillStyle = "#E0E000";
+        ctx.beginPath();
+        ctx.arc(1075, 360, 15, 0, 2 * Math.PI);
+        ctx.fill();
+
+        ctx.fillStyle = "#E0E000";
+        ctx.beginPath();
+        ctx.arc(1064, 375, 15, 0, 2 * Math.PI);
+        ctx.fill();
+
+        // Centro
+        ctx.fillStyle = "#406040";
+        ctx.beginPath();
+        ctx.arc(1050, 350, 25, 0, 2 * Math.PI);
+        ctx.fill();
+
+        // Aros
+        ctx.strokeStyle = "#6D6C0B";
+        ctx.lineWidth = 5;
+        ctx.beginPath();
+        ctx.arc(403, 377, 40, 0, 2 * Math.PI);
+        ctx.stroke();
+
+        ctx.strokeStyle = "#EFED0F";
+        ctx.lineWidth = 5;
+        ctx.beginPath();
+        ctx.arc(400, 375, 40, 0, 2 * Math.PI);
+        ctx.stroke();
+
+        ctx.strokeStyle = "#6D6C0B";
+        ctx.lineWidth = 5;
+        ctx.beginPath();
+        ctx.arc(553, 377, 40, 0, 2 * Math.PI);
+        ctx.stroke();
+
+        ctx.strokeStyle = "#EFED0F";
+        ctx.lineWidth = 5;
+        ctx.beginPath();
+        ctx.arc(550, 375, 40, 0, 2 * Math.PI);
+        ctx.stroke();
+
+        ctx.strokeStyle = "#6D6C0B";
+        ctx.lineWidth = 5;
+        ctx.beginPath();
+        ctx.arc(703, 377, 40, 0, 2 * Math.PI);
+        ctx.stroke();
+
+        ctx.strokeStyle = "#EFED0F";
+        ctx.lineWidth = 5;
+        ctx.beginPath();
+        ctx.arc(700, 375, 40, 0, 2 * Math.PI);
+        ctx.stroke();
+
+        //  Sonic
+        var sonic = new Image();
+        sonic.src = "Sonic.png";
+
+        sonic.onload = function () {
+            var newWidth = sonic.width * 0.50;  // Reduce el tamaño al 50%
+            var newHeight = sonic.height * 0.50; // Reduce el tamaño al 50%
+            ctx.drawImage(sonic, 150, 325, newWidth, newHeight);
         };
+
+        // // Suelo
+        // ctx.fillStyle = "#FF9765";
+        // ctx.strokeStyle = "#5E2816";
+        // ctx.lineWidth = 10;
+        // ctx.fillRect(0, 625, 1200, 100);
+        // ctx.strokeRect(-8, 660, 1212, 100);
+
+        // ctx.fillStyle = "#FFC8BC";
+        // ctx.strokeStyle = "#5E2816";
+        // ctx.lineWidth = 10;
+        // ctx.fillRect(0, 625, 1200, 30);
+        // ctx.strokeRect(-8, 625, 1212, 30);
+
+        // // Bloques
+        // ctx.fillStyle = "#FF8751";
+        // ctx.strokeStyle = "black";
+        // ctx.lineWidth = 5;
+        // ctx.fillRect(50, 300, 75, 75);
+        // ctx.strokeRect(50, 300, 75, 75);
+
+        // ctx.fillRect(200, 50, 75, 75);
+        // ctx.strokeRect(200, 50, 75, 75);
+
+        // ctx.fillRect(275, 50, 75, 75);
+        // ctx.strokeRect(275, 50, 75, 75);
+
+        // ctx.fillRect(1050, 250, 75, 75);
+        // ctx.strokeRect(1050, 250, 75, 75);
+
+
+        // // Bloques Fondo
+        // // Bloque Azul
+        // ctx.fillStyle = "black";
+        // ctx.fillRect(500, 245, 225, 375);
+
+        // ctx.fillStyle = "#70C1FF";
+        // ctx.strokeStyle = "black";
+        // ctx.lineWidth = 5;
+        // ctx.fillRect(470, 195, 225, 425);
+        // ctx.strokeRect(470, 195, 225, 425);
+
+        // ctx.fillStyle = "#0093E6";
+        // ctx.fillRect(672, 198, 20, 420);
+
+        // ctx.fillStyle = "#0093E6";
+        // ctx.fillRect(472, 597, 216, 20);
+
+        // // Bloque rosa
+        // ctx.fillStyle = "black";
+        // ctx.fillRect(365, 395, 225, 225);
+
+        // ctx.fillStyle = "#FFBFB5";
+        // ctx.strokeStyle = "black";
+        // ctx.lineWidth = 5;
+        // ctx.fillRect(300, 345, 225, 275);
+        // ctx.strokeRect(300, 345, 225, 275);
+
+        // ctx.fillStyle = "#F78A63";
+        // ctx.fillRect(502, 348, 20, 269);
+
+        // ctx.fillStyle = "#F78A63";
+        // ctx.fillRect(303, 597, 215, 20);
+
+        // // Bloque verde
+        // ctx.fillStyle = "#00DC5B";
+        // ctx.strokeStyle = "black";
+        // ctx.lineWidth = 5;
+        // ctx.fillRect(975, 445, 375, 175);
+        // ctx.strokeRect(975, 445, 375, 175);
+
+        // ctx.fillStyle = "#0A601F";
+        // ctx.fillRect(977, 597, 230, 20);
+
+        // // Tuberia
+        // ctx.fillStyle = "#00E455";
+        // ctx.strokeStyle = "black";
+        // ctx.lineWidth = 5;
+        // ctx.fillRect(790, 470, 75, 150);
+        // ctx.strokeRect(790, 470, 75, 150);
+
+        // ctx.fillStyle = "#00E455";
+        // ctx.strokeStyle = "black";
+        // ctx.lineWidth = 5;
+        // ctx.fillRect(775, 470, 105, 55);
+        // ctx.strokeRect(775, 470, 105, 55);
+
+        // // Tuercas azul
+        // ctx.strokeStyle = "black";
+        // ctx.fillStyle = "#BDCBCD";
+        // ctx.lineWidth = 6;
+        // ctx.beginPath();
+        // ctx.arc(490, 215, 10, 0, 2 * Math.PI);
+        // ctx.stroke();
+        // ctx.fill();
+
+        // ctx.lineWidth = 3;
+        // ctx.beginPath();
+        // ctx.moveTo(497, 208);  // Punto inicial de la línea (arriba a la derecha)
+        // ctx.lineTo(483, 222);  // Punto final de la línea (abajo a la izquierda)
+        // ctx.stroke();
+
+        // ctx.strokeStyle = "black";
+        // ctx.fillStyle = "#BDCBCD";
+        // ctx.lineWidth = 6;
+        // ctx.beginPath();
+        // ctx.arc(665, 215, 10, 0, 2 * Math.PI);
+        // ctx.stroke();
+        // ctx.fill();
+
+        // ctx.lineWidth = 3;
+        // ctx.beginPath();
+        // ctx.moveTo(672, 208);  // Punto inicial de la línea (arriba a la derecha)
+        // ctx.lineTo(658, 222);  // Punto final de la línea (abajo a la izquierda)
+        // ctx.stroke();
+
+        // // Tuercas rosa
+        // ctx.strokeStyle = "black";
+        // ctx.fillStyle = "#BDCBCD";
+        // ctx.lineWidth = 6;
+        // ctx.beginPath();
+        // ctx.arc(320, 368, 10, 0, 2 * Math.PI);
+        // ctx.stroke();
+        // ctx.fill();
+
+        // ctx.lineWidth = 3;
+        // ctx.beginPath();
+        // ctx.moveTo(327, 361);  // Punto inicial de la línea (arriba a la derecha)
+        // ctx.lineTo(313, 375);  // Punto final de la línea (abajo a la izquierda)
+        // ctx.stroke();
+
+        // ctx.strokeStyle = "black";
+        // ctx.fillStyle = "#BDCBCD";
+        // ctx.lineWidth = 6;
+        // ctx.beginPath();
+        // ctx.arc(495, 368, 10, 0, 2 * Math.PI);
+        // ctx.stroke();
+        // ctx.fill();
+
+        // ctx.lineWidth = 3;
+        // ctx.beginPath();
+        // ctx.moveTo(502, 361);  // Punto inicial de la línea (arriba a la derecha)
+        // ctx.lineTo(488, 375);  // Punto final de la línea (abajo a la izquierda)
+        // ctx.stroke();
+
+        // // Tuercas rosa abajo
+        // ctx.strokeStyle = "black";
+        // ctx.fillStyle = "#BDCBCD";
+        // ctx.lineWidth = 6;
+        // ctx.beginPath();
+        // ctx.arc(320, 595, 10, 0, 2 * Math.PI);
+        // ctx.stroke();
+        // ctx.fill();
+
+        // ctx.lineWidth = 3;
+        // ctx.beginPath();
+        // ctx.moveTo(327, 588);  // Punto inicial de la línea (arriba a la derecha)
+        // ctx.lineTo(313, 602);  // Punto final de la línea (abajo a la izquierda)
+        // ctx.stroke();
+
+        // ctx.strokeStyle = "black";
+        // ctx.fillStyle = "#BDCBCD";
+        // ctx.lineWidth = 6;
+        // ctx.beginPath();
+        // ctx.arc(495, 595, 10, 0, 2 * Math.PI);
+        // ctx.stroke();
+        // ctx.fill();
+
+        // ctx.lineWidth = 3;
+        // ctx.beginPath();
+        // ctx.moveTo(502, 588);  // Punto inicial de la línea (arriba a la derecha)
+        // ctx.lineTo(488, 602);  // Punto final de la línea (abajo a la izquierda)
+        // ctx.stroke();
+
+        // // Tuercas verdes
+        // ctx.strokeStyle = "black";
+        // ctx.fillStyle = "#BDCBCD";
+        // ctx.lineWidth = 6;
+        // ctx.beginPath();
+        // ctx.arc(1000, 465, 10, 0, 2 * Math.PI);
+        // ctx.stroke();
+        // ctx.fill();
+
+        // ctx.lineWidth = 3;
+        // ctx.beginPath();
+        // ctx.moveTo(1007, 458);  // Punto inicial de la línea (arriba a la derecha)
+        // ctx.lineTo(993, 472);  // Punto final de la línea (abajo a la izquierda)
+        // ctx.stroke();
+        
+        // ctx.strokeStyle = "black";
+        // ctx.fillStyle = "#BDCBCD";
+        // ctx.lineWidth = 6;
+        // ctx.beginPath();
+        // ctx.arc(1000, 595, 10, 0, 2 * Math.PI);
+        // ctx.stroke();
+        // ctx.fill();
+
+        // ctx.lineWidth = 3;
+        // ctx.beginPath();
+        // ctx.moveTo(1007, 588);  // Punto inicial de la línea (arriba a la derecha)
+        // ctx.lineTo(993, 602);  // Punto final de la línea (abajo a la izquierda)
+        // ctx.stroke();
+
+        // // Bloques flotantes puntitos
+        // ctx.fillStyle = "black";
+        // ctx.beginPath();
+        // ctx.arc(60, 310, 3, 0, 2 * Math.PI);
+        // ctx.fill();
+
+        // ctx.fillStyle = "black";
+        // ctx.beginPath();
+        // ctx.arc(115, 310, 3, 0, 2 * Math.PI);
+        // ctx.fill();
+
+        // ctx.fillStyle = "black";
+        // ctx.beginPath();
+        // ctx.arc(60, 365, 3, 0, 2 * Math.PI);
+        // ctx.fill();
+
+        // ctx.fillStyle = "black";
+        // ctx.beginPath();
+        // ctx.arc(115, 365, 3, 0, 2 * Math.PI);
+        // ctx.fill();
+
+        // // Cudrados arriba
+        // ctx.fillStyle = "black";
+        // ctx.beginPath();
+        // ctx.arc(210, 60, 3, 0, 2 * Math.PI);
+        // ctx.fill();
+
+        // ctx.fillStyle = "black";
+        // ctx.beginPath();
+        // ctx.arc(265 , 60, 3, 0, 2 * Math.PI);
+        // ctx.fill();
+
+        // ctx.fillStyle = "black";
+        // ctx.beginPath();
+        // ctx.arc(210, 115, 3, 0, 2 * Math.PI);
+        // ctx.fill();
+
+        // ctx.fillStyle = "black";
+        // ctx.beginPath();
+        // ctx.arc(265, 115, 3, 0, 2 * Math.PI);
+        // ctx.fill();
+
+        // ctx.fillStyle = "black";
+        // ctx.beginPath();
+        // ctx.arc(285, 60, 3, 0, 2 * Math.PI);
+        // ctx.fill();
+
+        // ctx.fillStyle = "black";
+        // ctx.beginPath();
+        // ctx.arc(340 , 60, 3, 0, 2 * Math.PI);
+        // ctx.fill();
+
+        // ctx.fillStyle = "black";
+        // ctx.beginPath();
+        // ctx.arc(285, 115, 3, 0, 2 * Math.PI);
+        // ctx.fill();
+
+        // ctx.fillStyle = "black";
+        // ctx.beginPath();
+        // ctx.arc(340, 115, 3, 0, 2 * Math.PI);
+        // ctx.fill();
+
+        // // Cuadro final
+        // ctx.fillStyle = "black";
+        // ctx.beginPath();
+        // ctx.arc(1060, 260, 3, 0, 2 * Math.PI);
+        // ctx.fill();
+
+        // ctx.fillStyle = "black";
+        // ctx.beginPath();
+        // ctx.arc(1115 , 260, 3, 0, 2 * Math.PI);
+        // ctx.fill();
+
+        // ctx.fillStyle = "black";
+        // ctx.beginPath();
+        // ctx.arc(1060, 313, 3, 0, 2 * Math.PI);
+        // ctx.fill();
+
+        // ctx.fillStyle = "black";
+        // ctx.beginPath();
+        // ctx.arc(1115, 313, 3, 0, 2 * Math.PI);
+        // ctx.fill();
+
+
+        // var mario = new Image();
+        // var pirana = new Image();
+        // mario.src = "mario.png";
+        // pirana.src = "pirana.png";
+
+        // mario.onload = function () {
+        //     var newWidth = mario.width * 0.60;  // Reduce el tamaño al 50%
+        //     var newHeight = mario.height * 0.60; // Reduce el tamaño al 50%
+        //     ctx.drawImage(mario, 590, 510, newWidth, newHeight);
+        // };
+        // pirana.onload = function () {
+        //     var newWidth = pirana.width * 0.18;  // Reduce el tamaño al 50%
+        //     var newHeight = pirana.height * 0.18; // Reduce el tamaño al 50%
+        //     ctx.drawImage(pirana, 780, 385, newWidth, newHeight);
+        // };
         // // Cielo
         // ctx.fillStyle = "#87CEEB";
         // ctx.fillRect(0, 0, myCanvas.width, myCanvas.height);
