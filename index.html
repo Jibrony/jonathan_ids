@@ -7,11 +7,11 @@
     <title>Canvas</title>
     <style>
         body {
-            background-color: white;
+            background-color: gray;
         }
 
         canvas {
-            background-color: white;
+            background-color: skyblue;
         }
 
         h1 {
@@ -32,151 +32,452 @@
 </head>
 
 <body>
-    <h1>Dream</h1>
-    <canvas id="myCanvas" width="800" height="600"></canvas>
+    <h1>Mario Bros</h1>
+    <canvas id="myCanvas" width="1200" height="700"></canvas>
     <p>Andrey Julian Gutierrez Arce</p>
     <script type="text/javascript">
         const myCanvas = document.getElementById("myCanvas");
         const ctx = myCanvas.getContext("2d");
 
-        // Cielo
-        ctx.fillStyle = "#87CEEB";
-        ctx.fillRect(0, 0, myCanvas.width, myCanvas.height);
-
-        // Sol
-        ctx.beginPath();
-        ctx.arc(100, 100, 50, 0, 2 * Math.PI, false);
-        ctx.fillStyle = "#FFD700";
-        ctx.fill();
-
-        // Nubes
-        function drawCloud(x, y) {
-            ctx.beginPath();
-            ctx.arc(x, y, 30, 0, 2 * Math.PI, false);
-            ctx.arc(x + 40, y, 40, 0, 2 * Math.PI, false);
-            ctx.arc(x + 90, y, 30, 0, 2 * Math.PI, false);
-            ctx.fillStyle = "#FFFFFF";
-            ctx.fill();
-        }
-
-        drawCloud(230, 120);
-        drawCloud(550, 150);
-
         // Suelo
-        ctx.fillStyle = "#32CD32";
-        ctx.fillRect(0, 400, myCanvas.width, 200);
+        ctx.fillStyle = "#FF9765";
+        ctx.strokeStyle = "#5E2816";
+        ctx.lineWidth = 10;
+        ctx.fillRect(0, 625, 1200, 100);
+        ctx.strokeRect(-8, 660, 1212, 100);
 
-        // Base casa
-        ctx.fillStyle = "#D4847D";
-        ctx.fillRect(300, 300, 200, 150);
+        ctx.fillStyle = "#FFC8BC";
+        ctx.strokeStyle = "#5E2816";
+        ctx.lineWidth = 10;
+        ctx.fillRect(0, 625, 1200, 30);
+        ctx.strokeRect(-8, 625, 1212, 30);
 
-        // Techo
-        ctx.beginPath();
-        ctx.moveTo(275, 300);
-        ctx.lineTo(525, 300);
-        ctx.lineTo(400, 200);
-        ctx.closePath();
-        ctx.fillStyle = "#654321";
-        ctx.fill();
-
-        // Puerta
-        ctx.fillStyle = "#FFFFFF";
-        ctx.fillRect(370, 370, 60, 80);
-
-        // Manija
-        ctx.beginPath();
-        ctx.arc(420, 420, 5, 0, 2 * Math.PI, false);
-        ctx.fillStyle = "#FFD700";
-        ctx.fill();
-
-        // Ventana
-        ctx.fillStyle = "#ADD8E6";
-        ctx.fillRect(330, 320, 40, 40);
-        ctx.fillRect(430, 320, 40, 40);
-
-        // Marco de la ventana
-        ctx.strokeStyle = "#FFFFFF";
+        // Bloques
+        ctx.fillStyle = "#FF8751";
+        ctx.strokeStyle = "black";
         ctx.lineWidth = 5;
-        ctx.strokeRect(330, 320, 40, 40);
-        ctx.strokeRect(430, 320, 40, 40);
+        ctx.fillRect(50, 300, 75, 75);
+        ctx.strokeRect(50, 300, 75, 75);
 
-        // Arbol
-        ctx.fillStyle = "#8B4513";
-        ctx.fillRect(600, 330, 20, 70);
+        ctx.fillRect(200, 50, 75, 75);
+        ctx.strokeRect(200, 50, 75, 75);
 
+        ctx.fillRect(275, 50, 75, 75);
+        ctx.strokeRect(275, 50, 75, 75);
+
+        ctx.fillRect(1050, 250, 75, 75);
+        ctx.strokeRect(1050, 250, 75, 75);
+
+
+        // Bloques Fondo
+        // Bloque Azul
+        ctx.fillStyle = "black";
+        ctx.fillRect(500, 245, 225, 375);
+
+        ctx.fillStyle = "#70C1FF";
+        ctx.strokeStyle = "black";
+        ctx.lineWidth = 5;
+        ctx.fillRect(470, 195, 225, 425);
+        ctx.strokeRect(470, 195, 225, 425);
+
+        ctx.fillStyle = "#0093E6";
+        ctx.fillRect(672, 198, 20, 420);
+
+        ctx.fillStyle = "#0093E6";
+        ctx.fillRect(472, 597, 216, 20);
+
+        // Bloque rosa
+        ctx.fillStyle = "black";
+        ctx.fillRect(365, 395, 225, 225);
+
+        ctx.fillStyle = "#FFBFB5";
+        ctx.strokeStyle = "black";
+        ctx.lineWidth = 5;
+        ctx.fillRect(300, 345, 225, 275);
+        ctx.strokeRect(300, 345, 225, 275);
+
+        ctx.fillStyle = "#F78A63";
+        ctx.fillRect(502, 348, 20, 269);
+
+        ctx.fillStyle = "#F78A63";
+        ctx.fillRect(303, 597, 215, 20);
+
+        // Bloque verde
+        ctx.fillStyle = "#00DC5B";
+        ctx.strokeStyle = "black";
+        ctx.lineWidth = 5;
+        ctx.fillRect(975, 445, 375, 175);
+        ctx.strokeRect(975, 445, 375, 175);
+
+        ctx.fillStyle = "#0A601F";
+        ctx.fillRect(977, 597, 230, 20);
+
+        // Tuberia
+        ctx.fillStyle = "#00E455";
+        ctx.strokeStyle = "black";
+        ctx.lineWidth = 5;
+        ctx.fillRect(790, 470, 75, 150);
+        ctx.strokeRect(790, 470, 75, 150);
+
+        ctx.fillStyle = "#00E455";
+        ctx.strokeStyle = "black";
+        ctx.lineWidth = 5;
+        ctx.fillRect(775, 470, 105, 55);
+        ctx.strokeRect(775, 470, 105, 55);
+
+        // Tuercas azul
+        ctx.strokeStyle = "black";
+        ctx.fillStyle = "#BDCBCD";
+        ctx.lineWidth = 6;
         ctx.beginPath();
-        ctx.arc(610, 310, 50, 0, 2 * Math.PI, false);
-        ctx.fillStyle = "#228B22";
+        ctx.arc(490, 215, 10, 0, 2 * Math.PI);
+        ctx.stroke();
         ctx.fill();
 
+        ctx.lineWidth = 3;
         ctx.beginPath();
-        ctx.arc(635, 290, 50, 0, 2 * Math.PI, false);
-        ctx.fillStyle = "#228B22";
+        ctx.moveTo(497, 208);  // Punto inicial de la línea (arriba a la derecha)
+        ctx.lineTo(483, 222);  // Punto final de la línea (abajo a la izquierda)
+        ctx.stroke();
+
+        ctx.strokeStyle = "black";
+        ctx.fillStyle = "#BDCBCD";
+        ctx.lineWidth = 6;
+        ctx.beginPath();
+        ctx.arc(665, 215, 10, 0, 2 * Math.PI);
+        ctx.stroke();
         ctx.fill();
 
+        ctx.lineWidth = 3;
         ctx.beginPath();
-        ctx.arc(585, 290, 50, 0, 2 * Math.PI, false);
-        ctx.fillStyle = "#228B22";
+        ctx.moveTo(672, 208);  // Punto inicial de la línea (arriba a la derecha)
+        ctx.lineTo(658, 222);  // Punto final de la línea (abajo a la izquierda)
+        ctx.stroke();
+
+        // Tuercas rosa
+        ctx.strokeStyle = "black";
+        ctx.fillStyle = "#BDCBCD";
+        ctx.lineWidth = 6;
+        ctx.beginPath();
+        ctx.arc(320, 368, 10, 0, 2 * Math.PI);
+        ctx.stroke();
         ctx.fill();
 
+        ctx.lineWidth = 3;
         ctx.beginPath();
-        ctx.arc(610, 265, 50, 0, 2 * Math.PI, false);
-        ctx.fillStyle = "#228B22";
+        ctx.moveTo(327, 361);  // Punto inicial de la línea (arriba a la derecha)
+        ctx.lineTo(313, 375);  // Punto final de la línea (abajo a la izquierda)
+        ctx.stroke();
+
+        ctx.strokeStyle = "black";
+        ctx.fillStyle = "#BDCBCD";
+        ctx.lineWidth = 6;
+        ctx.beginPath();
+        ctx.arc(495, 368, 10, 0, 2 * Math.PI);
+        ctx.stroke();
         ctx.fill();
 
-        // Personaje andy
+        ctx.lineWidth = 3;
         ctx.beginPath();
-        ctx.arc(150, 400, 30, 0, 2 * Math.PI); // Cabeza
-        ctx.fillStyle = 'peachpuff';
+        ctx.moveTo(502, 361);  // Punto inicial de la línea (arriba a la derecha)
+        ctx.lineTo(488, 375);  // Punto final de la línea (abajo a la izquierda)
+        ctx.stroke();
+
+        // Tuercas rosa abajo
+        ctx.strokeStyle = "black";
+        ctx.fillStyle = "#BDCBCD";
+        ctx.lineWidth = 6;
+        ctx.beginPath();
+        ctx.arc(320, 595, 10, 0, 2 * Math.PI);
+        ctx.stroke();
         ctx.fill();
 
-        // Cabello andy
+        ctx.lineWidth = 3;
         ctx.beginPath();
-        ctx.arc(150, 380, 25, 0, Math.PI, true);
-        ctx.fillStyle = 'black';
+        ctx.moveTo(327, 588);  // Punto inicial de la línea (arriba a la derecha)
+        ctx.lineTo(313, 602);  // Punto final de la línea (abajo a la izquierda)
+        ctx.stroke();
+
+        ctx.strokeStyle = "black";
+        ctx.fillStyle = "#BDCBCD";
+        ctx.lineWidth = 6;
+        ctx.beginPath();
+        ctx.arc(495, 595, 10, 0, 2 * Math.PI);
+        ctx.stroke();
         ctx.fill();
 
-        // Cuerpo andy
-        ctx.fillStyle = 'blue';
-        ctx.fillRect(130, 430, 40, 60);
-
-        // Piernas andy
-        ctx.fillStyle = 'black';
-        ctx.fillRect(130, 490, 15, 40);
-        ctx.fillRect(155, 490, 15, 40);
-
-        // Personaje mi amore
+        ctx.lineWidth = 3;
         ctx.beginPath();
-        ctx.arc(225, 400, 30, 0, 2 * Math.PI); // Cabeza
-        ctx.fillStyle = 'peachpuff';
+        ctx.moveTo(502, 588);  // Punto inicial de la línea (arriba a la derecha)
+        ctx.lineTo(488, 602);  // Punto final de la línea (abajo a la izquierda)
+        ctx.stroke();
+
+        // Tuercas verdes
+        ctx.strokeStyle = "black";
+        ctx.fillStyle = "#BDCBCD";
+        ctx.lineWidth = 6;
+        ctx.beginPath();
+        ctx.arc(1000, 465, 10, 0, 2 * Math.PI);
+        ctx.stroke();
         ctx.fill();
 
-        // Cabello mi amore
+        ctx.lineWidth = 3;
         ctx.beginPath();
-        ctx.arc(225, 380, 25, 0, Math.PI, true);
-        ctx.fillStyle = 'darkred';
+        ctx.moveTo(1007, 458);  // Punto inicial de la línea (arriba a la derecha)
+        ctx.lineTo(993, 472);  // Punto final de la línea (abajo a la izquierda)
+        ctx.stroke();
+        
+        ctx.strokeStyle = "black";
+        ctx.fillStyle = "#BDCBCD";
+        ctx.lineWidth = 6;
+        ctx.beginPath();
+        ctx.arc(1000, 595, 10, 0, 2 * Math.PI);
+        ctx.stroke();
         ctx.fill();
 
-        // Cuerpo mi amore
-        ctx.fillStyle = 'pink';
-        ctx.fillRect(205, 430, 40, 60);
-
-        // Piernas mi amore
-        ctx.fillStyle = 'black';
-        ctx.fillRect(205, 490, 15, 40);
-        ctx.fillRect(230, 490, 15, 40);
-
-        // Corazon <3 
+        ctx.lineWidth = 3;
         ctx.beginPath();
-        ctx.moveTo(172 + 15, 400 + 10);
-        ctx.bezierCurveTo(172 + 15, 400 + 9, 172 + 14, 400 + 6, 172 + 10, 400 + 6);
-        ctx.bezierCurveTo(172 + 4, 400 + 6, 172 + 4, 400 + 12.5, 172 + 4, 400 + 12.5);
-        ctx.bezierCurveTo(172 + 4, 400 + 16, 172 + 8, 400 + 20, 172 + 15, 400 + 24);
-        ctx.bezierCurveTo(172 + 22, 400 + 20, 172 + 26, 400 + 16, 172 + 26, 400 + 12.5);
-        ctx.bezierCurveTo(172 + 26, 400 + 12.5, 172 + 26, 400 + 6, 172 + 20, 400 + 6);
-        ctx.bezierCurveTo(172 + 16, 400 + 6, 172 + 15, 400 + 9, 172 + 15, 400 + 10);
-        ctx.fillStyle = "red";
+        ctx.moveTo(1007, 588);  // Punto inicial de la línea (arriba a la derecha)
+        ctx.lineTo(993, 602);  // Punto final de la línea (abajo a la izquierda)
+        ctx.stroke();
+
+        // Bloques flotantes puntitos
+        ctx.fillStyle = "black";
+        ctx.beginPath();
+        ctx.arc(60, 310, 3, 0, 2 * Math.PI);
         ctx.fill();
+
+        ctx.fillStyle = "black";
+        ctx.beginPath();
+        ctx.arc(115, 310, 3, 0, 2 * Math.PI);
+        ctx.fill();
+
+        ctx.fillStyle = "black";
+        ctx.beginPath();
+        ctx.arc(60, 365, 3, 0, 2 * Math.PI);
+        ctx.fill();
+
+        ctx.fillStyle = "black";
+        ctx.beginPath();
+        ctx.arc(115, 365, 3, 0, 2 * Math.PI);
+        ctx.fill();
+
+        // Cudrados arriba
+        ctx.fillStyle = "black";
+        ctx.beginPath();
+        ctx.arc(210, 60, 3, 0, 2 * Math.PI);
+        ctx.fill();
+
+        ctx.fillStyle = "black";
+        ctx.beginPath();
+        ctx.arc(265 , 60, 3, 0, 2 * Math.PI);
+        ctx.fill();
+
+        ctx.fillStyle = "black";
+        ctx.beginPath();
+        ctx.arc(210, 115, 3, 0, 2 * Math.PI);
+        ctx.fill();
+
+        ctx.fillStyle = "black";
+        ctx.beginPath();
+        ctx.arc(265, 115, 3, 0, 2 * Math.PI);
+        ctx.fill();
+
+        ctx.fillStyle = "black";
+        ctx.beginPath();
+        ctx.arc(285, 60, 3, 0, 2 * Math.PI);
+        ctx.fill();
+
+        ctx.fillStyle = "black";
+        ctx.beginPath();
+        ctx.arc(340 , 60, 3, 0, 2 * Math.PI);
+        ctx.fill();
+
+        ctx.fillStyle = "black";
+        ctx.beginPath();
+        ctx.arc(285, 115, 3, 0, 2 * Math.PI);
+        ctx.fill();
+
+        ctx.fillStyle = "black";
+        ctx.beginPath();
+        ctx.arc(340, 115, 3, 0, 2 * Math.PI);
+        ctx.fill();
+
+        // Cuadro final
+        ctx.fillStyle = "black";
+        ctx.beginPath();
+        ctx.arc(1060, 260, 3, 0, 2 * Math.PI);
+        ctx.fill();
+
+        ctx.fillStyle = "black";
+        ctx.beginPath();
+        ctx.arc(1115 , 260, 3, 0, 2 * Math.PI);
+        ctx.fill();
+
+        ctx.fillStyle = "black";
+        ctx.beginPath();
+        ctx.arc(1060, 313, 3, 0, 2 * Math.PI);
+        ctx.fill();
+
+        ctx.fillStyle = "black";
+        ctx.beginPath();
+        ctx.arc(1115, 313, 3, 0, 2 * Math.PI);
+        ctx.fill();
+
+
+        var mario = new Image();
+        var pirana = new Image();
+        mario.src = "mario.png";
+        pirana.src = "pirana.png";
+
+        mario.onload = function () {
+            var newWidth = mario.width * 0.60;  // Reduce el tamaño al 50%
+            var newHeight = mario.height * 0.60; // Reduce el tamaño al 50%
+            ctx.drawImage(mario, 590, 510, newWidth, newHeight);
+        };
+        pirana.onload = function () {
+            var newWidth = pirana.width * 0.18;  // Reduce el tamaño al 50%
+            var newHeight = pirana.height * 0.18; // Reduce el tamaño al 50%
+            ctx.drawImage(pirana, 780, 385, newWidth, newHeight);
+        };
+        // // Cielo
+        // ctx.fillStyle = "#87CEEB";
+        // ctx.fillRect(0, 0, myCanvas.width, myCanvas.height);
+
+        // // Sol
+        // ctx.beginPath();
+        // ctx.arc(100, 100, 50, 0, 2 * Math.PI, false);
+        // ctx.fillStyle = "#FFD700";
+        // ctx.fill();
+
+        // // Nubes
+        // function drawCloud(x, y) {
+        //     ctx.beginPath();
+        //     ctx.arc(x, y, 30, 0, 2 * Math.PI, false);
+        //     ctx.arc(x + 40, y, 40, 0, 2 * Math.PI, false);
+        //     ctx.arc(x + 90, y, 30, 0, 2 * Math.PI, false);
+        //     ctx.fillStyle = "#FFFFFF";
+        //     ctx.fill();
+        // }
+
+        // drawCloud(230, 120);
+        // drawCloud(550, 150);
+
+        // // Suelo
+        // ctx.fillStyle = "#32CD32";
+        // ctx.fillRect(0, 400, myCanvas.width, 200);
+
+        // // Base casa
+        // ctx.fillStyle = "#D4847D";
+        // ctx.fillRect(300, 300, 200, 150);
+
+        // // Techo
+        // ctx.beginPath();
+        // ctx.moveTo(275, 300);
+        // ctx.lineTo(525, 300);
+        // ctx.lineTo(400, 200);
+        // ctx.closePath();
+        // ctx.fillStyle = "#654321";
+        // ctx.fill();
+
+        // // Puerta
+        // ctx.fillStyle = "#FFFFFF";
+        // ctx.fillRect(370, 370, 60, 80);
+
+        // // Manija
+        // ctx.beginPath();
+        // ctx.arc(420, 420, 5, 0, 2 * Math.PI, false);
+        // ctx.fillStyle = "#FFD700";
+        // ctx.fill();
+
+        // // Ventana
+        // ctx.fillStyle = "#ADD8E6";
+        // ctx.fillRect(330, 320, 40, 40);
+        // ctx.fillRect(430, 320, 40, 40);
+
+        // // Marco de la ventana
+        // ctx.strokeStyle = "#FFFFFF";
+        // ctx.lineWidth = 5;
+        // ctx.strokeRect(330, 320, 40, 40);
+        // ctx.strokeRect(430, 320, 40, 40);
+
+        // // Arbol
+        // ctx.fillStyle = "#8B4513";
+        // ctx.fillRect(600, 330, 20, 70);
+
+        // ctx.beginPath();
+        // ctx.arc(610, 310, 50, 0, 2 * Math.PI, false);
+        // ctx.fillStyle = "#228B22";
+        // ctx.fill();
+
+        // ctx.beginPath();
+        // ctx.arc(635, 290, 50, 0, 2 * Math.PI, false);
+        // ctx.fillStyle = "#228B22";
+        // ctx.fill();
+
+        // ctx.beginPath();
+        // ctx.arc(585, 290, 50, 0, 2 * Math.PI, false);
+        // ctx.fillStyle = "#228B22";
+        // ctx.fill();
+
+        // ctx.beginPath();
+        // ctx.arc(610, 265, 50, 0, 2 * Math.PI, false);
+        // ctx.fillStyle = "#228B22";
+        // ctx.fill();
+
+        // // Personaje andy
+        // ctx.beginPath();
+        // ctx.arc(150, 400, 30, 0, 2 * Math.PI); // Cabeza
+        // ctx.fillStyle = 'peachpuff';
+        // ctx.fill();
+
+        // // Cabello andy
+        // ctx.beginPath();
+        // ctx.arc(150, 380, 25, 0, Math.PI, true);
+        // ctx.fillStyle = 'black';
+        // ctx.fill();
+
+        // // Cuerpo andy
+        // ctx.fillStyle = 'blue';
+        // ctx.fillRect(130, 430, 40, 60);
+
+        // // Piernas andy
+        // ctx.fillStyle = 'black';
+        // ctx.fillRect(130, 490, 15, 40);
+        // ctx.fillRect(155, 490, 15, 40);
+
+        // // Personaje mi amore
+        // ctx.beginPath();
+        // ctx.arc(225, 400, 30, 0, 2 * Math.PI); // Cabeza
+        // ctx.fillStyle = 'peachpuff';
+        // ctx.fill();
+
+        // // Cabello mi amore
+        // ctx.beginPath();
+        // ctx.arc(225, 380, 25, 0, Math.PI, true);
+        // ctx.fillStyle = 'darkred';
+        // ctx.fill();
+
+        // // Cuerpo mi amore
+        // ctx.fillStyle = 'pink';
+        // ctx.fillRect(205, 430, 40, 60);
+
+        // // Piernas mi amore
+        // ctx.fillStyle = 'black';
+        // ctx.fillRect(205, 490, 15, 40);
+        // ctx.fillRect(230, 490, 15, 40);
+
+        // // Corazon <3
+        // ctx.beginPath();
+        // ctx.moveTo(172 + 15, 400 + 10);
+        // ctx.bezierCurveTo(172 + 15, 400 + 9, 172 + 14, 400 + 6, 172 + 10, 400 + 6);
+        // ctx.bezierCurveTo(172 + 4, 400 + 6, 172 + 4, 400 + 12.5, 172 + 4, 400 + 12.5);
+        // ctx.bezierCurveTo(172 + 4, 400 + 16, 172 + 8, 400 + 20, 172 + 15, 400 + 24);
+        // ctx.bezierCurveTo(172 + 22, 400 + 20, 172 + 26, 400 + 16, 172 + 26, 400 + 12.5);
+        // ctx.bezierCurveTo(172 + 26, 400 + 12.5, 172 + 26, 400 + 6, 172 + 20, 400 + 6);
+        // ctx.bezierCurveTo(172 + 16, 400 + 6, 172 + 15, 400 + 9, 172 + 15, 400 + 10);
+        // ctx.fillStyle = "red";
+        // ctx.fill();
 
         // var centerX = myCanvas.width / 2;
         // var centerY = myCanvas.height / 2;
