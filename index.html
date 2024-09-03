@@ -11,15 +11,7 @@
         }
 
         canvas {
-            background-color: darkblue;
-        }
-
-        h1 {
-            font-family: Arial, sans-serif;
-            font-size: 30px;
-            font-weight: bold;
-            color: #000000;
-            margin-bottom: 10px;
+            background-color: white;
         }
 
         p {
@@ -32,153 +24,273 @@
 </head>
 
 <body>
-    <h1>Sonic</h1>
     <canvas id="myCanvas" width="1200" height="700"></canvas>
-    <p>Andrey Julian Gutierrez Arce</p>
+    <p id="Cont">Speed: 4</p>
     <script type="text/javascript">
         const myCanvas = document.getElementById("myCanvas");
-        const ctx = myCanvas.getContext("2d");
+const ctx = myCanvas.getContext("2d");
 
-        const squareSize = 50; // Tamaño de cada cuadro
-        const rows = myCanvas.height / squareSize;
-        const cols = myCanvas.width / squareSize;
+class Rectangulo {
+    constructor(x, y, ancho, alto) {
+        this.x = x;
+        this.y = y;
+        this.ancho = ancho;
+        this.alto = alto;
+    }
 
-        function drawCheckerboard() {
-            for (let row = 0; row < rows; row++) {
-                for (let col = 0; col < cols; col++) {
-                    // Alternar color entre negro y blanco
-                    ctx.fillStyle = (row + col) % 2 === 0 ? "#601F00" : "#C15F01";
-                    // Dibujar el cuadro
-                    ctx.fillRect(col * squareSize, row * squareSize, squareSize, squareSize);
-                }
-            }
-        }
+    dibujar(ctx) {
+        ctx.fillStyle = "#000000";
+        ctx.fillRect(this.x, this.y, this.ancho, this.alto);
+    }
 
-        drawCheckerboard();
+    colisionaCon(otro) {
+        return this.x < otro.x + otro.ancho &&
+               this.x + this.ancho > otro.x &&
+               this.y < otro.y + otro.alto &&
+               this.y + this.alto > otro.y;
+    }
+
+    mover(dx, dy) {
+        this.x += dx;
+        this.y += dy;
+    }
+
+    reubicar() {
+        this.x = Math.random() * (myCanvas.width - this.ancho);
+        this.y = Math.random() * (myCanvas.height - this.alto);
+    }
+}
+
+var speed = 4;
+var way = "";
+
+// Cuadrado que el usuario mueve
+let jugador = new Rectangulo(100, 100, 50, 50);
+
+// Segundo cuadrado
+let enemigo = new Rectangulo(300, 300, 50, 50);
+
+function getRandomColor() {
+    var trans = '0.5';
+    var color = 'rgba(';
+    for (var i = 0; i < 3; i++) {
+        color += Math.floor(Math.random() * 255) + ',';
+    }
+    color += trans + ')';
+    return color;
+}
+
+function drawRect() {
+    ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
+
+    // Dibujar el cuadrado del jugador
+    ctx.fillStyle = getRandomColor();
+    jugador.dibujar(ctx);
+
+    // Dibujar el segundo cuadrado
+    enemigo.dibujar(ctx);
+
+    // Verificar colisión
+    if (jugador.colisionaCon(enemigo)) {
+        enemigo.reubicar(); // Reubicar el segundo cuadrado si hay colisión
+    }
+}
+
+document.addEventListener('keydown', (e) => {
+    switch (e.key) {
+        case "w":
+            way = "up";
+            break;
+        case "s":
+            way = "down";
+            break;
+        case "a":
+            way = "left";
+            break;
+        case "d":
+            way = "right";
+            break;
+        case " ":
+            speed += 4;
+            document.getElementById('Cont').innerText = "Speed: " + speed;
+            break;
+    }
+
+    drawRect();
+});
+
+function Update() {
+    switch (way) {
+        case "up":
+            jugador.mover(0, -speed);
+            break;
+        case "down":
+            jugador.mover(0, speed);
+            break;
+        case "left":
+            jugador.mover(-speed, 0);
+            break;
+        case "right":
+            jugador.mover(speed, 0);
+            break;
+    }
+
+    if (jugador.x < 0) jugador.x = 0;
+    if (jugador.x + jugador.ancho > myCanvas.width) jugador.x = myCanvas.width - jugador.ancho;
+    if (jugador.y < 0) jugador.y = 0;
+    if (jugador.y + jugador.alto > myCanvas.height) jugador.y = myCanvas.height - jugador.alto;
+}
+
+function GameLoop() {
+    Update();
+    drawRect();
+    requestAnimationFrame(GameLoop);
+}
+
+GameLoop();
+        // const myCanvas = document.getElementById("myCanvas");
+        // const ctx = myCanvas.getContext("2d");
+
+        // const squareSize = 50; // Tamaño de cada cuadro
+        // const rows = myCanvas.height / squareSize;
+        // const cols = myCanvas.width / squareSize;
+
+        // function drawCheckerboard() {
+        //     for (let row = 0; row < rows; row++) {
+        //         for (let col = 0; col < cols; col++) {
+        //             // Alternar color entre negro y blanco
+        //             ctx.fillStyle = (row + col) % 2 === 0 ? "#601F00" : "#C15F01";
+        //             // Dibujar el cuadro
+        //             ctx.fillRect(col * squareSize, row * squareSize, squareSize, squareSize);
+        //         }
+        //     }
+        // }
+
+        // drawCheckerboard();
         
-        // Fondo
-        ctx.fillStyle = "#20009F";
-        ctx.fillRect(0, 0, 1200, 500);
+        // // Fondo
+        // ctx.fillStyle = "#20009F";
+        // ctx.fillRect(0, 0, 1200, 500);
 
-        // Pasto
-        ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
-        ctx.fillRect(0, 525, 1200, 50);
+        // // Pasto
+        // ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
+        // ctx.fillRect(0, 525, 1200, 50);
 
-        ctx.fillStyle = "#045F01";
-        ctx.fillRect(0, 500, 1200, 25);
+        // ctx.fillStyle = "#045F01";
+        // ctx.fillRect(0, 500, 1200, 25);
 
-        ctx.fillStyle = "#40A000";
-        ctx.fillRect(0, 475, 1200, 25);
+        // ctx.fillStyle = "#40A000";
+        // ctx.fillRect(0, 475, 1200, 25);
 
-        ctx.fillStyle = "#7EE000";
-        ctx.fillRect(0, 450, 1200, 25);
+        // ctx.fillStyle = "#7EE000";
+        // ctx.fillRect(0, 450, 1200, 25);
 
-        //  Arbol de sonic
-        var palma = new Image();
-        palma.src = "palma.png";
+        // //  Arbol de sonic
+        // var palma = new Image();
+        // palma.src = "palma.png";
 
-        palma.onload = function () {
-            ctx.drawImage(palma, 800, 75);
-            ctx.drawImage(palma, -50, 75);
-        };
+        // palma.onload = function () {
+        //     ctx.drawImage(palma, 800, 75);
+        //     ctx.drawImage(palma, -50, 75);
+        // };
 
-        // Girasol
-        // Tallo
-        ctx.fillStyle = "#40A000";
-        ctx.fillRect(1045, 350, 10, 100);
-        // Hojas
-        ctx.fillStyle = "#E0E000";
-        ctx.beginPath();
-        ctx.arc(1038, 376, 15, 0, 2 * Math.PI);
-        ctx.fill();
+        // // Girasol
+        // // Tallo
+        // ctx.fillStyle = "#40A000";
+        // ctx.fillRect(1045, 350, 10, 100);
+        // // Hojas
+        // ctx.fillStyle = "#E0E000";
+        // ctx.beginPath();
+        // ctx.arc(1038, 376, 15, 0, 2 * Math.PI);
+        // ctx.fill();
 
-        ctx.fillStyle = "#E0E000";
-        ctx.beginPath();
-        ctx.arc(1022, 360, 15, 0, 2 * Math.PI);
-        ctx.fill();
+        // ctx.fillStyle = "#E0E000";
+        // ctx.beginPath();
+        // ctx.arc(1022, 360, 15, 0, 2 * Math.PI);
+        // ctx.fill();
 
-        ctx.fillStyle = "#E0E000";
-        ctx.beginPath();
-        ctx.arc(1025, 335, 15, 0, 2 * Math.PI);
-        ctx.fill();
+        // ctx.fillStyle = "#E0E000";
+        // ctx.beginPath();
+        // ctx.arc(1025, 335, 15, 0, 2 * Math.PI);
+        // ctx.fill();
 
-        ctx.fillStyle = "#E0E000";
-        ctx.beginPath();
-        ctx.arc(1040, 322, 15, 0, 2 * Math.PI);
-        ctx.fill();
+        // ctx.fillStyle = "#E0E000";
+        // ctx.beginPath();
+        // ctx.arc(1040, 322, 15, 0, 2 * Math.PI);
+        // ctx.fill();
 
-        ctx.fillStyle = "#E0E000";
-        ctx.beginPath();
-        ctx.arc(1062, 325, 15, 0, 2 * Math.PI);
-        ctx.fill();
+        // ctx.fillStyle = "#E0E000";
+        // ctx.beginPath();
+        // ctx.arc(1062, 325, 15, 0, 2 * Math.PI);
+        // ctx.fill();
 
-        ctx.fillStyle = "#E0E000";
-        ctx.beginPath();
-        ctx.arc(1075, 340, 15, 0, 2 * Math.PI);
-        ctx.fill();
+        // ctx.fillStyle = "#E0E000";
+        // ctx.beginPath();
+        // ctx.arc(1075, 340, 15, 0, 2 * Math.PI);
+        // ctx.fill();
 
-        ctx.fillStyle = "#E0E000";
-        ctx.beginPath();
-        ctx.arc(1075, 360, 15, 0, 2 * Math.PI);
-        ctx.fill();
+        // ctx.fillStyle = "#E0E000";
+        // ctx.beginPath();
+        // ctx.arc(1075, 360, 15, 0, 2 * Math.PI);
+        // ctx.fill();
 
-        ctx.fillStyle = "#E0E000";
-        ctx.beginPath();
-        ctx.arc(1064, 375, 15, 0, 2 * Math.PI);
-        ctx.fill();
+        // ctx.fillStyle = "#E0E000";
+        // ctx.beginPath();
+        // ctx.arc(1064, 375, 15, 0, 2 * Math.PI);
+        // ctx.fill();
 
-        // Centro
-        ctx.fillStyle = "#406040";
-        ctx.beginPath();
-        ctx.arc(1050, 350, 25, 0, 2 * Math.PI);
-        ctx.fill();
+        // // Centro
+        // ctx.fillStyle = "#406040";
+        // ctx.beginPath();
+        // ctx.arc(1050, 350, 25, 0, 2 * Math.PI);
+        // ctx.fill();
 
-        // Aros
-        ctx.strokeStyle = "#6D6C0B";
-        ctx.lineWidth = 5;
-        ctx.beginPath();
-        ctx.arc(403, 377, 40, 0, 2 * Math.PI);
-        ctx.stroke();
+        // // Aros
+        // ctx.strokeStyle = "#6D6C0B";
+        // ctx.lineWidth = 5;
+        // ctx.beginPath();
+        // ctx.arc(403, 377, 40, 0, 2 * Math.PI);
+        // ctx.stroke();
 
-        ctx.strokeStyle = "#EFED0F";
-        ctx.lineWidth = 5;
-        ctx.beginPath();
-        ctx.arc(400, 375, 40, 0, 2 * Math.PI);
-        ctx.stroke();
+        // ctx.strokeStyle = "#EFED0F";
+        // ctx.lineWidth = 5;
+        // ctx.beginPath();
+        // ctx.arc(400, 375, 40, 0, 2 * Math.PI);
+        // ctx.stroke();
 
-        ctx.strokeStyle = "#6D6C0B";
-        ctx.lineWidth = 5;
-        ctx.beginPath();
-        ctx.arc(553, 377, 40, 0, 2 * Math.PI);
-        ctx.stroke();
+        // ctx.strokeStyle = "#6D6C0B";
+        // ctx.lineWidth = 5;
+        // ctx.beginPath();
+        // ctx.arc(553, 377, 40, 0, 2 * Math.PI);
+        // ctx.stroke();
 
-        ctx.strokeStyle = "#EFED0F";
-        ctx.lineWidth = 5;
-        ctx.beginPath();
-        ctx.arc(550, 375, 40, 0, 2 * Math.PI);
-        ctx.stroke();
+        // ctx.strokeStyle = "#EFED0F";
+        // ctx.lineWidth = 5;
+        // ctx.beginPath();
+        // ctx.arc(550, 375, 40, 0, 2 * Math.PI);
+        // ctx.stroke();
 
-        ctx.strokeStyle = "#6D6C0B";
-        ctx.lineWidth = 5;
-        ctx.beginPath();
-        ctx.arc(703, 377, 40, 0, 2 * Math.PI);
-        ctx.stroke();
+        // ctx.strokeStyle = "#6D6C0B";
+        // ctx.lineWidth = 5;
+        // ctx.beginPath();
+        // ctx.arc(703, 377, 40, 0, 2 * Math.PI);
+        // ctx.stroke();
 
-        ctx.strokeStyle = "#EFED0F";
-        ctx.lineWidth = 5;
-        ctx.beginPath();
-        ctx.arc(700, 375, 40, 0, 2 * Math.PI);
-        ctx.stroke();
+        // ctx.strokeStyle = "#EFED0F";
+        // ctx.lineWidth = 5;
+        // ctx.beginPath();
+        // ctx.arc(700, 375, 40, 0, 2 * Math.PI);
+        // ctx.stroke();
 
-        //  Sonic
-        var sonic = new Image();
-        sonic.src = "Sonic.png";
+        // //  Sonic
+        // var sonic = new Image();
+        // sonic.src = "Sonic.png";
 
-        sonic.onload = function () {
-            var newWidth = sonic.width * 0.50;  // Reduce el tamaño al 50%
-            var newHeight = sonic.height * 0.50; // Reduce el tamaño al 50%
-            ctx.drawImage(sonic, 150, 325, newWidth, newHeight);
-        };
+        // sonic.onload = function () {
+        //     var newWidth = sonic.width * 0.50;  // Reduce el tamaño al 50%
+        //     var newHeight = sonic.height * 0.50; // Reduce el tamaño al 50%
+        //     ctx.drawImage(sonic, 150, 325, newWidth, newHeight);
+        // };
 
         // // Suelo
         // ctx.fillStyle = "#FF9765";
