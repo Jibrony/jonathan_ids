@@ -59,6 +59,31 @@ class Rectangulo {
         this.x = Math.random() * (myCanvas.width - this.ancho);
         this.y = Math.random() * (myCanvas.height - this.alto);
     }
+
+    proteger(otro, jugador) {
+        const margen = 10; // Margen de protección
+
+        // Calcular la diferencia de posiciones entre el jugador y el cuadrado protegido
+        const diffX = otro.x - jugador.x;
+        const diffY = otro.y - jugador.y;
+
+        // Posicionar la pared en el lado adecuado entre el jugador y el cuadrado protegido
+        if (Math.abs(diffX) > Math.abs(diffY)) {
+            // Proteger horizontalmente
+            this.x = (diffX > 0) ? otro.x - this.ancho - margen : otro.x + otro.ancho + margen;
+            this.y = otro.y;
+        } else {
+            // Proteger verticalmente
+            this.y = (diffY > 0) ? otro.y - this.alto - margen : otro.y + otro.alto + margen;
+            this.x = otro.x;
+        }
+
+        // Asegurarse de que la pared no se salga del canvas
+        if (this.x < 0) this.x = 0;
+        if (this.x + this.ancho > myCanvas.width) this.x = myCanvas.width - this.ancho;
+        if (this.y < 0) this.y = 0;
+        if (this.y + this.alto > myCanvas.height) this.y = myCanvas.height - this.alto;
+    }
 }
 
 var speed = 4;
@@ -69,6 +94,9 @@ let jugador = new Rectangulo(100, 100, 50, 50);
 
 // Segundo cuadrado
 let enemigo = new Rectangulo(300, 300, 50, 50);
+
+// Pared
+let pared = new Rectangulo(0, 0, 200, 50);
 
 function getRandomColor() {
     var trans = '0.5';
@@ -90,9 +118,33 @@ function drawRect() {
     // Dibujar el segundo cuadrado
     enemigo.dibujar(ctx);
 
-    // Verificar colisión
+    // Dibujar la pared
+    ctx.fillStyle = "#FF0000";  // Pared de color rojo
+    pared.dibujar(ctx);
+
+    // Verificar colisión con el segundo cuadrado
     if (jugador.colisionaCon(enemigo)) {
         enemigo.reubicar(); // Reubicar el segundo cuadrado si hay colisión
+        pared.proteger(enemigo, jugador); // Reubicar la pared para proteger el cuadrado
+    }
+
+    // Verificar colisión con la pared
+    if (jugador.colisionaCon(pared)) {
+        // Revertir el movimiento para evitar que atraviese la pared
+        switch (way) {
+            case "up":
+                jugador.mover(0, speed);
+                break;
+            case "down":
+                jugador.mover(0, -speed);
+                break;
+            case "left":
+                jugador.mover(speed, 0);
+                break;
+            case "right":
+                jugador.mover(-speed, 0);
+                break;
+        }
     }
 }
 
@@ -135,6 +187,7 @@ function Update() {
             break;
     }
 
+    // Limitar el movimiento del jugador dentro del canvas
     if (jugador.x < 0) jugador.x = 0;
     if (jugador.x + jugador.ancho > myCanvas.width) jugador.x = myCanvas.width - jugador.ancho;
     if (jugador.y < 0) jugador.y = 0;
@@ -148,6 +201,127 @@ function GameLoop() {
 }
 
 GameLoop();
+//         const myCanvas = document.getElementById("myCanvas");
+// const ctx = myCanvas.getContext("2d");
+
+// class Rectangulo {
+//     constructor(x, y, ancho, alto) {
+//         this.x = x;
+//         this.y = y;
+//         this.ancho = ancho;
+//         this.alto = alto;
+//     }
+
+//     dibujar(ctx) {
+//         ctx.fillStyle = "#000000";
+//         ctx.fillRect(this.x, this.y, this.ancho, this.alto);
+//     }
+
+//     colisionaCon(otro) {
+//         return this.x < otro.x + otro.ancho &&
+//                this.x + this.ancho > otro.x &&
+//                this.y < otro.y + otro.alto &&
+//                this.y + this.alto > otro.y;
+//     }
+
+//     mover(dx, dy) {
+//         this.x += dx;
+//         this.y += dy;
+//     }
+
+//     reubicar() {
+//         this.x = Math.random() * (myCanvas.width - this.ancho);
+//         this.y = Math.random() * (myCanvas.height - this.alto);
+//     }
+// }
+
+// var speed = 4;
+// var way = "";
+
+// // Cuadrado que el usuario mueve
+// let jugador = new Rectangulo(100, 100, 50, 50);
+
+// // Segundo cuadrado
+// let enemigo = new Rectangulo(300, 300, 50, 50);
+
+// function getRandomColor() {
+//     var trans = '0.5';
+//     var color = 'rgba(';
+//     for (var i = 0; i < 3; i++) {
+//         color += Math.floor(Math.random() * 255) + ',';
+//     }
+//     color += trans + ')';
+//     return color;
+// }
+
+// function drawRect() {
+//     ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
+
+//     // Dibujar el cuadrado del jugador
+//     ctx.fillStyle = getRandomColor();
+//     jugador.dibujar(ctx);
+
+//     // Dibujar el segundo cuadrado
+//     enemigo.dibujar(ctx);
+
+//     // Verificar colisión
+//     if (jugador.colisionaCon(enemigo)) {
+//         enemigo.reubicar(); // Reubicar el segundo cuadrado si hay colisión
+//     }
+// }
+
+// document.addEventListener('keydown', (e) => {
+//     switch (e.key) {
+//         case "w":
+//             way = "up";
+//             break;
+//         case "s":
+//             way = "down";
+//             break;
+//         case "a":
+//             way = "left";
+//             break;
+//         case "d":
+//             way = "right";
+//             break;
+//         case " ":
+//             speed += 4;
+//             document.getElementById('Cont').innerText = "Speed: " + speed;
+//             break;
+//     }
+
+//     drawRect();
+// });
+
+// function Update() {
+//     switch (way) {
+//         case "up":
+//             jugador.mover(0, -speed);
+//             break;
+//         case "down":
+//             jugador.mover(0, speed);
+//             break;
+//         case "left":
+//             jugador.mover(-speed, 0);
+//             break;
+//         case "right":
+//             jugador.mover(speed, 0);
+//             break;
+//     }
+
+//     if (jugador.x < 0) jugador.x = 0;
+//     if (jugador.x + jugador.ancho > myCanvas.width) jugador.x = myCanvas.width - jugador.ancho;
+//     if (jugador.y < 0) jugador.y = 0;
+//     if (jugador.y + jugador.alto > myCanvas.height) jugador.y = myCanvas.height - jugador.alto;
+// }
+
+// function GameLoop() {
+//     Update();
+//     drawRect();
+//     requestAnimationFrame(GameLoop);
+// }
+
+// GameLoop();
         // const myCanvas = document.getElementById("myCanvas");
         // const ctx = myCanvas.getContext("2d");
 
