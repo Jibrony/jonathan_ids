@@ -24,183 +24,206 @@
 </head>
 
 <body>
-    <canvas id="myCanvas" width="1200" height="700"></canvas>
-    <p id="Cont">Speed: 4</p>
+    <canvas id="myCanvas" width="700" height="700"></canvas>
+    <p id="Cont">Speed: 6</p>
+    <p id="Score">Score: 0</p>
     <script type="text/javascript">
         const myCanvas = document.getElementById("myCanvas");
-const ctx = myCanvas.getContext("2d");
+        const ctx = myCanvas.getContext("2d");
 
-class Rectangulo {
-    constructor(x, y, ancho, alto) {
-        this.x = x;
-        this.y = y;
-        this.ancho = ancho;
-        this.alto = alto;
-    }
+        class Rectangulo {
+            constructor(x, y, ancho, alto, color) {
+                this.x = x;
+                this.y = y;
+                this.ancho = ancho;
+                this.alto = alto;
+                this.color = color;
+            }
 
-    dibujar(ctx) {
-        ctx.fillStyle = "#000000";
-        ctx.fillRect(this.x, this.y, this.ancho, this.alto);
-    }
+            dibujar(ctx) {
+                ctx.fillStyle = this.color;
+                ctx.fillRect(this.x, this.y, this.ancho, this.alto);
+            }
 
-    colisionaCon(otro) {
-        return this.x < otro.x + otro.ancho &&
-               this.x + this.ancho > otro.x &&
-               this.y < otro.y + otro.alto &&
-               this.y + this.alto > otro.y;
-    }
+            colisionaCon(otro) {
+                return this.x < otro.x + otro.ancho &&
+                    this.x + this.ancho > otro.x &&
+                    this.y < otro.y + otro.alto &&
+                    this.y + this.alto > otro.y;
+            }
 
-    mover(dx, dy) {
-        this.x += dx;
-        this.y += dy;
-    }
+            mover(dx, dy) {
+                this.x += dx;
+                this.y += dy;
+            }
 
-    reubicar() {
-        this.x = Math.random() * (myCanvas.width - this.ancho);
-        this.y = Math.random() * (myCanvas.height - this.alto);
-    }
-
-    proteger(otro, jugador) {
-        const margen = 10; // Margen de protección
-
-        // Calcular la diferencia de posiciones entre el jugador y el cuadrado protegido
-        const diffX = otro.x - jugador.x;
-        const diffY = otro.y - jugador.y;
-
-        // Posicionar la pared en el lado adecuado entre el jugador y el cuadrado protegido
-        if (Math.abs(diffX) > Math.abs(diffY)) {
-            // Proteger horizontalmente
-            this.x = (diffX > 0) ? otro.x - this.ancho - margen : otro.x + otro.ancho + margen;
-            this.y = otro.y;
-        } else {
-            // Proteger verticalmente
-            this.y = (diffY > 0) ? otro.y - this.alto - margen : otro.y + otro.alto + margen;
-            this.x = otro.x;
+            reubicar() {
+                this.x = Math.random() * (myCanvas.width - this.ancho);
+                this.y = Math.random() * (myCanvas.height - this.alto);
+            }
         }
 
-        // Asegurarse de que la pared no se salga del canvas
-        if (this.x < 0) this.x = 0;
-        if (this.x + this.ancho > myCanvas.width) this.x = myCanvas.width - this.ancho;
-        if (this.y < 0) this.y = 0;
-        if (this.y + this.alto > myCanvas.height) this.y = myCanvas.height - this.alto;
-    }
-}
+        var speed = 5;
+        var score = 0;
+        var way = "";
+        var pause = false;
 
-var speed = 4;
-var way = "";
+        // Cuadrado que el usuario mueve
+        let jugador = new Rectangulo(100, 100, 50, 50, "#00FF00");
 
-// Cuadrado que el usuario mueve
-let jugador = new Rectangulo(100, 100, 50, 50);
+        // Segundo cuadrado que colisiona y se reubica
+        let objetivo = new Rectangulo(500, 250, 15, 15, "#0000FF");
 
-// Segundo cuadrado
-let enemigo = new Rectangulo(300, 300, 50, 50);
+        // Tercer cuadrado que no se reubica pero tiene colisión
+        let enemigo = new Rectangulo(150, 150, 400, 10, "gray");
 
-// Pared
-let pared = new Rectangulo(0, 0, 200, 50);
+        let pared = new Rectangulo(150, 550,400, 10, "gray");
 
-function getRandomColor() {
-    var trans = '0.5';
-    var color = 'rgba(';
-    for (var i = 0; i < 3; i++) {
-        color += Math.floor(Math.random() * 255) + ',';
-    }
-    color += trans + ')';
-    return color;
-}
+        let pared2 = new Rectangulo(150, 350, 400, 10, "gray");
 
-function drawRect() {
-    ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
+        // Pared fija
+        // var pared = [];
 
-    // Dibujar el cuadrado del jugador
-    ctx.fillStyle = getRandomColor();
-    jugador.dibujar(ctx);
+// Agregar paredes al arreglo
+        // pared.push(new Rectangulo(400, 50, 200, 50, "#FF0000"));
+        // pared.push(new Rectangulo(100, 200, 50, 150, "#FF0000"));
+        // pared.push(new Rectangulo(600, 300, 100, 100, "#FF0000"));
 
-    // Dibujar el segundo cuadrado
-    enemigo.dibujar(ctx);
+        function drawRect() {
+            ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
 
-    // Dibujar la pared
-    ctx.fillStyle = "#FF0000";  // Pared de color rojo
-    pared.dibujar(ctx);
+            // Dibujar el cuadrado del jugador
+            jugador.dibujar(ctx);
 
-    // Verificar colisión con el segundo cuadrado
-    if (jugador.colisionaCon(enemigo)) {
-        enemigo.reubicar(); // Reubicar el segundo cuadrado si hay colisión
-        pared.proteger(enemigo, jugador); // Reubicar la pared para proteger el cuadrado
-    }
+            // Dibujar el objetivo
+            objetivo.dibujar(ctx);
 
-    // Verificar colisión con la pared
-    if (jugador.colisionaCon(pared)) {
-        // Revertir el movimiento para evitar que atraviese la pared
-        switch (way) {
-            case "up":
-                jugador.mover(0, speed);
-                break;
-            case "down":
-                jugador.mover(0, -speed);
-                break;
-            case "left":
-                jugador.mover(speed, 0);
-                break;
-            case "right":
-                jugador.mover(-speed, 0);
-                break;
+            // Dibujar el enemigo
+            enemigo.dibujar(ctx);
+
+            pared.dibujar(ctx);
+
+            pared2.dibujar(ctx);
+            // Dibujar la pared fija
+            //  pared.forEach(function (prd, i, array) {
+            //     prd.dibujar(ctx); // Dibuja cada pared
+            // });
+
+            // Verificar colisión con el objetivo
+    
+            Update();
+            requestAnimationFrame(drawRect);
+            if(pause){
+                ctx.font = "50px Arial";
+                ctx.fillText("P A U S E", 100, 300);
+            }
         }
-    }
-}
 
-document.addEventListener('keydown', (e) => {
-    switch (e.key) {
-        case "w":
-            way = "up";
-            break;
-        case "s":
-            way = "down";
-            break;
-        case "a":
-            way = "left";
-            break;
-        case "d":
-            way = "right";
-            break;
-        case " ":
-            speed += 4;
-            document.getElementById('Cont').innerText = "Speed: " + speed;
-            break;
-    }
+        document.addEventListener('keydown', (e) => {
+            switch (e.key) {
+                case "w":
+                    way = "up";
+                    break;
+                case "s":
+                    way = "down";
+                    break;
+                case "a":
+                    way = "left";
+                    break;
+                case "d":
+                    way = "right";
+                    break;
+                case "p":
+                    pause =!pause;
+                    break;
+            }
 
-    drawRect();
-});
+            drawRect();
+        });
 
-function Update() {
-    switch (way) {
-        case "up":
-            jugador.mover(0, -speed);
-            break;
-        case "down":
-            jugador.mover(0, speed);
-            break;
-        case "left":
-            jugador.mover(-speed, 0);
-            break;
-        case "right":
-            jugador.mover(speed, 0);
-            break;
-    }
+        function Update() {
+            if(!pause) {
+                switch (way) {
+                    case "up":
+                        jugador.mover(0, -speed);
+                        break;
+                    case "down":
+                        jugador.mover(0, speed);
+                        break;
+                    case "left":
+                        jugador.mover(-speed, 0);
+                        break;
+                    case "right":
+                        jugador.mover(speed, 0);
+                        break;
+                }
+    
+                // Verificar si el jugador sale del canvas por la izquierda
+                if (jugador.x + jugador.ancho < 0) {
+                    jugador.x = myCanvas.width;
+                }
+                // Verificar si el jugador sale del canvas por la derecha
+                if (jugador.x > myCanvas.width) {
+                    jugador.x = -jugador.ancho;
+                }
+                // Verificar si el jugador sale del canvas por arriba
+                if (jugador.y + jugador.alto < 0) {
+                    jugador.y = myCanvas.height;
+                }
+                // Verificar si el jugador sale del canvas por abajo
+                if (jugador.y > myCanvas.height) {
+                    jugador.y = -jugador.alto;
+                }
 
-    // Limitar el movimiento del jugador dentro del canvas
-    if (jugador.x < 0) jugador.x = 0;
-    if (jugador.x + jugador.ancho > myCanvas.width) jugador.x = myCanvas.width - jugador.ancho;
-    if (jugador.y < 0) jugador.y = 0;
-    if (jugador.y + jugador.alto > myCanvas.height) jugador.y = myCanvas.height - jugador.alto;
-}
+                if (jugador.colisionaCon(objetivo)) {
+                objetivo.reubicar(); // Reubicar el objetivo si hay colisión
+                score+=20;
+                document.getElementById('Score').innerText = "Score: " + score;
+                speed += 2;
+                document.getElementById('Cont').innerText = "Speed: " + speed;
+            }
 
-function GameLoop() {
-    Update();
-    drawRect();
-    requestAnimationFrame(GameLoop);
-}
+            // Verificar colisión con el enemigo
+            if (jugador.colisionaCon(enemigo)) {
+                // Revertir el movimiento para evitar que atraviese el enemigo
+                switch (way) {
+                    case "up":
+                        jugador.mover(0, speed);
+                        break;
+                    case "down":
+                        jugador.mover(0, -speed);
+                        break;
+                    case "left":
+                        jugador.mover(speed, 0);
+                        break;
+                    case "right":
+                        jugador.mover(-speed, 0);
+                        break;
+                }
+            }
 
-GameLoop();
+            // Verificar colisión con la pared
+            if (jugador.colisionaCon(pared)) {
+                // Revertir el movimiento para evitar que atraviese la pared
+                switch (way) {
+                    case "up":
+                        jugador.mover(0, speed);
+                        break;
+                    case "down":
+                        jugador.mover(0, -speed);
+                        break;
+                    case "left":
+                        jugador.mover(speed, 0);
+                        break;
+                    case "right":
+                        jugador.mover(-speed, 0);
+                        break;
+                }
+            }
+
+            }
+        }
+
 //         const myCanvas = document.getElementById("myCanvas");
 // const ctx = myCanvas.getContext("2d");
 
