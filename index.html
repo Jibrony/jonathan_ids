@@ -11,7 +11,7 @@
         }
 
         canvas {
-            background-color: white;
+            background-color: black;
         }
 
         p {
@@ -24,7 +24,167 @@
 </head>
 
 <body>
-    <canvas id="myCanvas" width="700" height="700"></canvas>
+
+    <canvas id="myCanvas" width="600" height="500"></canvas>
+
+    <script type="text/javascript">
+        const myCanvas = document.getElementById("myCanvas");
+        const ctx = myCanvas.getContext("2d");
+    
+        class Rectangulo {
+            constructor(color, w, h, x, y, speed) {
+                this.color = color;
+                this.h = h;
+                this.w = w;
+                this.x = x;
+                this.y = y;
+                this.speed = speed;
+            }
+    
+            colision(otro) {
+                return (
+                    this.x < otro.x + otro.w &&
+                    this.x + this.w > otro.x &&
+                    this.y < otro.y + otro.h &&
+                    this.y + this.h > otro.y
+                );
+            }
+        }
+    
+        const pacman = new Image();
+        pacman.src = "pacman.png";
+    
+        const ghost = new Image();
+        ghost.src = "fantasma.png";
+
+        const sound = new Audio("xd.mp3");
+    
+        var direction = '';
+        var speed = 5;
+        var pausa = false;
+        var score = 0;
+        var walls = [];
+    
+        var player = new Rectangulo('', 30, 30, 100, 100, speed);
+        var target = new Rectangulo('', 20, 20, 300, 200, null);
+    
+        walls.push(new Rectangulo('#5564eb', 20, 300, 520, 50, null));
+        walls.push(new Rectangulo('#5564eb', 300, 20, 150, 300, null));
+        walls.push(new Rectangulo('#5564eb', 300, 20, 150, 400, null));
+    
+        document.addEventListener('keypress', function (e) {
+            switch (e.keyCode) {
+                case 119:
+                    direction = 'up';
+                    break;
+                case 115:
+                    direction = 'down';
+                    break;
+                case 97:
+                    direction = 'left';
+                    break;
+                case 100:
+                    direction = 'right';
+                    break;
+                case 32:
+                    pausa = !pausa;
+                    break;
+            }
+        });
+    
+        function update() {
+            if (!pausa) {
+                switch (direction) {
+                    case 'up':
+                        player.y -= speed;
+                        if (player.y <= 10) { player.y = 480; }
+                        break;
+                    case 'down':
+                        player.y += speed;
+                        if (player.y > 500) { player.y = 0; }
+                        break;
+                    case 'right':
+                        player.x += speed;
+                        if (player.x > 500) { player.x = 0; }
+                        break;
+                    case 'left':
+                        player.x -= speed;
+                        if (player.x <= 10) { player.x = 580; }
+                        break;
+                }
+            }
+    
+            if (player.colision(target)) {
+                target.x = Math.floor(Math.random() * 500);
+                target.y = Math.floor(Math.random() * 500);
+                player.speed += 2.5;
+                score += 5;
+                sound.play();
+            }
+    
+            walls.forEach(function (wall) {
+                if (player.colision(wall)) {
+                    switch (direction) {
+                        case 'up':
+                            player.y += player.speed;
+                            break;
+                        case 'down':
+                            player.y -= player.speed;
+                            break;
+                        case 'right':
+                            player.x -= player.speed;
+                            break;
+                        case 'left':
+                            player.x += player.speed;
+                            break;
+                    }
+                }
+            });
+        }
+    
+        function paint() {
+            ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
+    
+            // Dibujar las paredes
+            walls.forEach(function (wall) {
+                ctx.fillStyle = wall.color;
+                ctx.fillRect(wall.x, wall.y, wall.w, wall.h);
+            });
+    
+            // Dibujar el jugador (Pacman)
+            ctx.drawImage(pacman, player.x, player.y, player.w, player.h);
+    
+            // Dibujar el target (Ghost)
+            ctx.drawImage(ghost, target.x, target.y, target.w, target.h);
+    
+            // Mostrar el puntaje
+            ctx.fillStyle = 'white';
+            ctx.font = '30px Arial';
+            ctx.fillText('SCORE: ' + score, 15, 40);
+    
+            // Pausar el juego
+            if (pausa) {
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.30)';
+                ctx.fillRect(0, 0, myCanvas.width, myCanvas.height);
+                ctx.fillStyle = 'white';
+                ctx.font = '50px Arial';
+                ctx.fillText('P A U S E', 180, 250);
+            }
+    
+            update();
+            requestAnimationFrame(paint);
+        }
+    
+
+        pacman.onload = ghost.onload = function() {
+            paint();
+        };
+    
+    </script>
+    
+
+
+    <!-- <canvas id="myCanvas" width="700" height="700"></canvas>
     <p id="Cont">Speed: 6</p>
     <p id="Score">Score: 0</p>
     <script type="text/javascript">
@@ -222,7 +382,8 @@
             }
 
             }
-        }
+        } -->
+    <!--
 
 //         const myCanvas = document.getElementById("myCanvas");
 // const ctx = myCanvas.getContext("2d");
@@ -1063,7 +1224,7 @@
         // ctx.fillText("Andrey Julián Gutiérrez Arce", centerX, canvas.height + 30);
     </script>
 
-
+<!---->
 
     <!-- <canvas id="myCanvas" width="600" height="600"></canvas>
     <p id="Cont">Speed: 4</p>
