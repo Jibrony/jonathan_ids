@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aplicación Vue.js</title>
+    <style type="text/css">
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: auto;
+            font-family: Helvetica, sans-serif;
+            background-color: #4b4b4b;
+            margin: 0;
+        }
+
+        #main {
+            width: 600px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 150px;
+        }
+
+        h2,
+        h3 {
+            text-align: center;
+            font-weight: 400;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .cont {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .suma {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        input {
+            margin: 5px 0;
+            padding: 10px;
+            width: 80%;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        fieldset {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border-radius: 4px;
+            border: 1px solid;
+            margin-bottom: 10px;
+        }
+
+        legend {
+            font-size: 20px;
+            margin-bottom: 10px;
+            font-weight: lighterweight;
+        }
+
+        p {
+            margin-top: 10px;
+            font-size: 25px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="main">
+        <h2>Bienvenido a la aplicación: {{ message }}</h2>
+
+        <!-- <button @click="cont++" class="cont">
+            Haz clic: {{ cont }}
+        </button> -->
+
+        <!-- <form>
+            <fieldset>
+                <legend>
+                    Datos Personales
+                </legend>
+                <label>
+                    Nombre:
+                </label>
+                <input type="text" v-model="name" placeholder="Write here" name="name">
+                <label>
+                    Saludos para: <span id="span_name">¡¡ {{ name }} !! </span>
+                </label>
+            </fieldset>
+        </form> -->
+
+        <!-- <form>
+            <fieldset>
+                <legend>Calculadora</legend>
+                <label>
+                    Número 1:
+                </label>
+                <input type="number" v-model.number="num1" placeholder="Número 1">
+                <label>
+                    Número 2:
+                </label>
+                <input type="number" v-model.number="num2" placeholder="Número 2">
+                <button type="button" @click="sumar" class="suma">Sumar</button>
+                <p>Resultado: {{ result }}</p>
+            </fieldset>
+        </form> -->
+        <fieldset>
+            <legend>Dream Team</legend>
+            <ul>
+                <li v-for="user in users">{{ user.name }} - {{ user.rol }}</li>
+            </ul>
+
+            <hr>
+
+        </fieldset>
+
+        <form>
+            <fieldset>
+                <legend>Agregar Usuario</legend>
+                <label>
+                    Nombre
+                </label>
+                <input type="text" v-model="newName" placeholder="Write here">
+                <label>
+                    Rol
+                </label>
+                <input type="text" v-model="newRol" placeholder="Write here">
+                <button type="button" @click="addUser">Agregar</button>
+            </fieldset>
+        </form>
+    </div>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script>
+        const { createApp, ref } = Vue;
+
+        createApp({
+            setup() {
+                const message = ref('Primera vez en Vue!');
+                // const num1 = ref(0);
+                // const num2 = ref(0);
+                // const result = ref(0);
+                // const cont = ref(0);
+                const users = ref([
+                    { name: 'Henry Cavill', rol: 'Guapeton' }
+                ]);
+                const newName = ref('');
+                const newRol = ref('');
+
+                const sumar = () => {
+                    result.value = num1.value + num2.value;
+                };
+
+                const addUser = () => {
+                    users.value.push({ name: newName.value, rol: newRol.value });
+                    newName.value = '';
+                    newRol.value = '';
+                };
+
+                return {
+                    message,
+                    // cont,
+                    // num1,
+                    // num2,
+                    // result,
+                    users,
+                    newName,
+                    newRol,
+                    sumar,
+                    addUser
+                };
+            }
+        }).mount('#main');
+    </script>
+</body>
+
+</html>
