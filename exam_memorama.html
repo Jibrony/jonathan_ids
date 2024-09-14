@@ -6,14 +6,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Memorama</title>
     <style type="text/css">
+        @import url('https://fonts.googleapis.com/css2?family=Almendra+SC&display=swap');
+
+
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Almendra SC', serif;
             text-align: center;
-            background-color: #f4f4f9;
+            background-color: #000;
+            background-image: url('background-hogwarts.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        #gameTitle {
+            background-size: contain;
+            background-repeat: no-repeat;
+            width: auto;
+            height: auto;
+            transition: width 3s ease, height 3s ease, margin 3s ease;
         }
 
         canvas {
-            display: block;
+            /* Ocultar canvas hasta que inicie el juego */
+            display: none;
             margin: 20px auto;
             background-color: #ffffff;
             border: 2px solid #000;
@@ -24,76 +47,141 @@
         }
 
         #timer {
+            /* Ocultar temporizador hasta que comience el juego */
+            display: none;
             font-size: 18px;
             font-weight: bold;
+            background-color: #3a2c29;
+            color: #d4af37;
+            border: 2px solid #d4af37;
+            border-radius: 5px;
+            font-family: 'Almendra SC', serif;
+            margin-top: 20px;
+            margin-bottom: -10px;
         }
 
         button {
-            padding: 10px 20px;
-            font-size: 16px;
+            padding: 12px 25px;
+            font-size: 20px;
             cursor: pointer;
+            background-color: #3a2c29;
+            /* Color marrón oscuro, similar a la madera o al cuero */
+            color: #d4af37;
+            /* Color dorado */
+            border: 2px solid #d4af37;
+            /* Borde dorado */
+            font-family: 'Almendra SC', serif;
+            /* Fuente con estilo mágico */
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: background-color 0.5s ease, box-shadow 0.5s ease;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        }
+
+        button:hover {
+            background-color: #d4af37;
+            /* Cambio a dorado brillante */
+            color: #3a2c29;
+            /* Texto marrón oscuro al pasar el mouse */
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.7);
+            /* Aumenta la sombra */
+        }
+
+        button:active {
+            background-color: #5c4033;
+            /* Color más oscuro cuando el botón está activo */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+        }
+
+        #exitButton {
+            display: none;
+            padding: 15px 30px;
+            font-size: 22px;
+            background-color: #3a2c29;
+            color: #d4af37;
+            border: 2px solid #d4af37;
+            font-family: 'Almendra SC', serif;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: background-color 0.5s ease, box-shadow 0.5s ease;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            margin-top: -10px;
+        }
+
+        #exitButton:hover {
+            background-color: #d4af37;
+            color: #3a2c29;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.7);
+        }
+
+        #exitButton:active {
+            background-color: #5c4033;
+        }
+
+        .started #gameTitle {
+            margin-top: 30px !important;
+            margin-bottom: -10px !important;
         }
     </style>
 </head>
 
 <body>
-    <h1>Juego de Memorama</h1>
+    <h1>
+        <img src="big-tittle.png" alt="Juego de Memorama" class="tittle" id="gameTitle">
+    </h1>
+
     <div class="controls">
-        <button id="startButton">Iniciar Juego</button>
+        <button id="startButton">INICIAR PARTIDA</button>
+        <button id="exitButton">FINALIZAR PARTIDA</button>
         <div id="timer">Tiempo: 0 segundos</div>
     </div>
-    <canvas id="gameCanvas" width="940" height="700"></canvas>
+    <canvas id="gameCanvas" width="940" height="675"></canvas>
 
     <audio id="flipSound" src="flip-card.mp3"></audio>
     <audio id="matchSound" src="ruta_a_sonido_coincidencia.mp3"></audio>
     <audio id="winSound" src="ruta_a_sonido_victoria.mp3"></audio>
-    <audio id="backgroundMusic" src="ruta_a_musica_ambiental.mp3" loop></audio>
+    <audio id="backgroundMusic" src="soundtrack.mp3" loop></audio>
 
     <script>
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
-    
+        const gameTitle = document.getElementById('gameTitle');
+        const startButton = document.getElementById('startButton');
+        const exitButton = document.getElementById('exitButton');
+        const timerDisplay = document.getElementById('timer');
+
         let flippedCards = [];
         let matchedPairs = 0;
-        let totalPairs = 16;  // Cambiado a 20 pares
+        let totalPairs = 16;
         let cards = [];
         let gameStarted = false;
         let timer = 0;
         let timerInterval;
         let moveCount = 0;
         let level = 1;
-    
+
         const flipSound = document.getElementById('flipSound');
         const matchSound = document.getElementById('matchSound');
         const winSound = document.getElementById('winSound');
         const backgroundMusic = document.getElementById('backgroundMusic');
-    
+
         function createCards() {
             let cardIds = [];
-            // Generar exactamente 20 pares
             for (let i = 1; i <= totalPairs; i++) {
-                cardIds.push(i);  // Primer ejemplar del par
-                cardIds.push(i);  // Segundo ejemplar del par
+                cardIds.push(i);
+                cardIds.push(i);
             }
-    
-            // Barajar los pares
             cardIds = shuffleArray(cardIds);
-    
-            // Verificar que el número de cartas es el correcto
-            if (cardIds.length !== totalPairs * 2) {
-                console.error('Error: No se han generado suficientes pares de cartas.');
-                return;
-            }
-    
-            // Configuración del tablero de 5 filas x 8 columnas
+
             const cardWidth = 100;
             const cardHeight = 150;
             const margin = 16;
             let index = 0;
-    
+
             cards = [];
-    
-            // Ahora 5 filas y 8 columnas para 40 cartas (20 pares)
+
             for (let row = 0; row < 4; row++) {
                 for (let col = 0; col < 8; col++) {
                     if (index < cardIds.length) {
@@ -111,13 +199,8 @@
                     }
                 }
             }
-    
-            // Verificar que todas las cartas se han generado correctamente
-            if (cards.length !== totalPairs * 2) {
-                console.error('Error: No se han creado suficientes cartas.');
-            }
         }
-    
+
         function shuffleArray(array) {
             for (let i = array.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
@@ -125,7 +208,7 @@
             }
             return array;
         }
-    
+
         function startGame() {
             gameStarted = true;
             matchedPairs = 0;
@@ -137,44 +220,83 @@
             timerInterval = setInterval(updateTimer, 1000);
             backgroundMusic.play();
             drawBoard();
+
+            document.body.classList.add('started');
+
+            // Mover la imagen de título a la parte superior
+            gameTitle.style.height = "auto";
+            gameTitle.style.width = "20%";
+            gameTitle.style.margin = "10px auto";
+
+            // Mostrar el canvas y el temporizador
+            canvas.style.display = "block";
+            timerDisplay.style.display = "block";
+
+            // Ocultar el botón de inicio y mostrar el botón de salir
+            startButton.style.display = "none";
+            exitButton.style.display = "inline-block";
         }
-    
+
+        function exitGame() {
+            clearInterval(timerInterval);
+            gameStarted = false;
+            backgroundMusic.pause();
+
+            // Restablecer la pantalla inicial
+            gameTitle.style.height = "auto";
+            gameTitle.style.width = "auto";
+            gameTitle.style.marginTop = "0 auto";
+            canvas.style.display = "none";
+            timerDisplay.style.display = "none";
+            startButton.style.display = "inline-block";
+            exitButton.style.display = "none";
+        }
+
+        const backgroundImage = new Image();
+        backgroundImage.src = 'background-xdf.jpg';
+
+        backgroundImage.onload = function () {
+            ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
+        };
+
         function drawBoard() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
             cards.forEach(card => drawCard(card));
         }
-    
+
+        const cardBackImage = new Image();
+        cardBackImage.src = 'card-back-img.png';
+
         function drawCard(card) {
             if (card.flipped || card.matched) {
-                ctx.fillStyle = '#ffffff';
+                ctx.fillStyle = '#0F0E39';
                 ctx.fillRect(card.x, card.y, card.width, card.height);
-                ctx.fillStyle = '#000000';
-                ctx.font = '40px Arial';
+                ctx.fillStyle = '#d4af37';
+                ctx.font = '40px Almendra SC';
                 ctx.fillText(card.id, card.x + card.width / 3, card.y + card.height / 1.7);
             } else {
-                ctx.fillStyle = '#0077cc';
-                ctx.fillRect(card.x, card.y, card.width, card.height);
+                ctx.drawImage(cardBackImage, card.x, card.y, card.width, card.height);
             }
         }
-    
+
         canvas.addEventListener('click', (event) => {
             if (!gameStarted) return;
-    
+
             const rect = canvas.getBoundingClientRect();
             const mouseX = event.clientX - rect.left;
             const mouseY = event.clientY - rect.top;
-    
+
             cards.forEach((card, index) => {
                 if (isCardClicked(card, mouseX, mouseY) && !card.flipped && !card.matched) {
                     flipCard(index);
                 }
             });
         });
-    
+
         function isCardClicked(card, x, y) {
             return x > card.x && x < card.x + card.width && y > card.y && y < card.y + card.height;
         }
-    
+
         function flipCard(cardIndex) {
             if (flippedCards.length < 2) {
                 flipSound.play();
@@ -183,17 +305,17 @@
                 flippedCards.push(cardIndex);
                 drawBoard();
             }
-    
+
             if (flippedCards.length === 2) {
                 checkForMatch();
             }
         }
-    
+
         function checkForMatch() {
             moveCount++;
             const card1 = cards[flippedCards[0]];
             const card2 = cards[flippedCards[1]];
-    
+
             if (card1.id === card2.id) {
                 matchedPairs++;
                 matchSound.play();
@@ -211,32 +333,32 @@
                     drawBoard();
                 }, 1000);
             }
-    
+
             if (moveCount % 5 === 0) {
                 levelUp();
             }
         }
-    
+
         function levelUp() {
             level++;
-            // Incrementar la dificultad
         }
-    
+
         function winGame() {
             clearInterval(timerInterval);
             winSound.play();
             backgroundMusic.pause();
             alert('¡Ganaste!');
         }
-    
+
         function updateTimer() {
             timer++;
             document.getElementById('timer').textContent = `Tiempo: ${timer} segundos`;
         }
-    
+
         document.getElementById('startButton').addEventListener('click', startGame);
+        document.getElementById('exitButton').addEventListener('click', exitGame);
     </script>
-    
+
 </body>
 
 </html>
