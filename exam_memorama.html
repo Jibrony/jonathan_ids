@@ -43,13 +43,32 @@
         }
 
         .controls {
-            margin: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* margin-top: 20px; */
+            gap: 20px;
+            /* Separación entre los elementos */
+        }
+
+        .control-item {
+            font-size: 18px;
+            font-weight: bold;
+            background-color: #3a2c29;
+            color: #d4af37;
+            border: 2px solid #d4af37;
+            border-radius: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+            font-family: 'Almendra SC', serif;
         }
 
         #timer {
             /* Ocultar temporizador hasta que comience el juego */
             display: none;
-            font-size: 18px;
+            /* font-size: 18px;
             font-weight: bold;
             background-color: #3a2c29;
             color: #d4af37;
@@ -57,10 +76,22 @@
             border-radius: 5px;
             font-family: 'Almendra SC', serif;
             margin-top: 20px;
-            margin-bottom: -10px;
+            margin-bottom: -10px; */
         }
 
-        button {
+        #score {
+            display: none;
+            /* font-size: 18px;
+            font-weight: bold;
+            background-color: #3a2c29;
+            color: #d4af37;
+            border: 2px solid #d4af37;
+            border-radius: 5px;
+            font-family: 'Almendra SC', serif;
+            margin-top: 10px; */
+        }
+
+        #startButton {
             padding: 12px 25px;
             font-size: 20px;
             cursor: pointer;
@@ -79,7 +110,7 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
         }
 
-        button:hover {
+        #startButton:hover {
             background-color: #d4af37;
             /* Cambio a dorado brillante */
             color: #3a2c29;
@@ -88,7 +119,7 @@
             /* Aumenta la sombra */
         }
 
-        button:active {
+        #startButton:active {
             background-color: #5c4033;
             /* Color más oscuro cuando el botón está activo */
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
@@ -96,7 +127,7 @@
 
         #exitButton {
             display: none;
-            padding: 15px 30px;
+            /* padding: 15px 30px;
             font-size: 22px;
             background-color: #3a2c29;
             color: #d4af37;
@@ -107,7 +138,7 @@
             transition: background-color 0.5s ease, box-shadow 0.5s ease;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-            margin-top: -10px;
+            margin-top: -10px; */
         }
 
         #exitButton:hover {
@@ -118,6 +149,14 @@
 
         #exitButton:active {
             background-color: #5c4033;
+        }
+
+        #nextLevel {
+            display: none;
+        }
+
+        #level{
+            display: none;
         }
 
         .started #gameTitle {
@@ -133,16 +172,20 @@
     </h1>
 
     <div class="controls">
-        <button id="startButton">INICIAR PARTIDA</button>
-        <button id="exitButton">FINALIZAR PARTIDA</button>
-        <div id="timer">Tiempo: 0 segundos</div>
+        <button id="startButton">Iniciar Partida</button>
+        <button id="exitButton" class="control-item">Finalizar Partida</button>
+        <p id="timer" class="control-item">Tiempo: 0 segundos</p>
+        <p id="score" class="control-item">Puntos: 0</p>
+        <button id="nextLevel" class="control-item">Siguiente Nivel</button>
+        <p id="level" class="control-item">Nivel: 1</p>
     </div>
     <canvas id="gameCanvas" width="940" height="675"></canvas>
 
     <audio id="flipSound" src="flip-card.mp3"></audio>
-    <audio id="matchSound" src="ruta_a_sonido_coincidencia.mp3"></audio>
-    <audio id="winSound" src="ruta_a_sonido_victoria.mp3"></audio>
+    <audio id="matchSound" src="match-sound.mp3"></audio>
+    <audio id="winSound" src="win-sound.mp3"></audio>
     <audio id="backgroundMusic" src="soundtrack.mp3" loop></audio>
+
 
     <script>
         const canvas = document.getElementById('gameCanvas');
@@ -151,6 +194,9 @@
         const startButton = document.getElementById('startButton');
         const exitButton = document.getElementById('exitButton');
         const timerDisplay = document.getElementById('timer');
+        const scoreDisplay = document.getElementById('score');
+        const nextLevel = document.getElementById('nextLevel');
+        const levelDisplay = document.getElementById('level');
 
         let flippedCards = [];
         let matchedPairs = 0;
@@ -161,11 +207,20 @@
         let timerInterval;
         let moveCount = 0;
         let level = 1;
+        let score = 0;
+        let matchStreak = 0;  // Racha de matches consecutivos para nivel 3
 
         const flipSound = document.getElementById('flipSound');
         const matchSound = document.getElementById('matchSound');
         const winSound = document.getElementById('winSound');
         const backgroundMusic = document.getElementById('backgroundMusic');
+
+        const cardImages = [];
+        for (let i = 1; i <= totalPairs; i++) {
+            const img = new Image();
+            img.src = `img-${i}.jpeg`;
+            cardImages[i] = img;  // Almacenar las imágenes por ID
+        }
 
         function createCards() {
             let cardIds = [];
@@ -201,6 +256,7 @@
             }
         }
 
+        // Revuelve las cartas del tablero
         function shuffleArray(array) {
             for (let i = array.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
@@ -209,10 +265,12 @@
             return array;
         }
 
+        // Inicia el juego
         function startGame() {
             gameStarted = true;
             matchedPairs = 0;
             moveCount = 0;
+            matchStreak = 0;  // Restablecer racha de matches
             timer = 0;
             cards = [];
             flippedCards = [];
@@ -221,35 +279,43 @@
             backgroundMusic.play();
             drawBoard();
 
+            document.getElementById('level').textContent = `Nivel: ${level}`;
+
             document.body.classList.add('started');
 
-            // Mover la imagen de título a la parte superior
             gameTitle.style.height = "auto";
             gameTitle.style.width = "20%";
             gameTitle.style.margin = "10px auto";
 
-            // Mostrar el canvas y el temporizador
             canvas.style.display = "block";
             timerDisplay.style.display = "block";
-
-            // Ocultar el botón de inicio y mostrar el botón de salir
+            scoreDisplay.style.display = "block";
             startButton.style.display = "none";
             exitButton.style.display = "inline-block";
+            nextLevel.style.display = "none";  // Ocultar botón de siguiente nivel
+            levelDisplay.style.display = "block";
         }
 
+        // Salir de la partida
         function exitGame() {
             clearInterval(timerInterval);
             gameStarted = false;
             backgroundMusic.pause();
-
-            // Restablecer la pantalla inicial
+            
             gameTitle.style.height = "auto";
             gameTitle.style.width = "auto";
             gameTitle.style.marginTop = "0 auto";
             canvas.style.display = "none";
             timerDisplay.style.display = "none";
             startButton.style.display = "inline-block";
+
+            // Ocultar elementos del menu principal
             exitButton.style.display = "none";
+            scoreDisplay.style.display = "none";
+            nextLevelButton.style.display = "none";
+            levelDisplay.style.display = "none";
+
+            score = 0;
         }
 
         const backgroundImage = new Image();
@@ -259,6 +325,7 @@
             ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
         };
 
+        // Dibuja el tablero
         function drawBoard() {
             ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
             cards.forEach(card => drawCard(card));
@@ -267,18 +334,17 @@
         const cardBackImage = new Image();
         cardBackImage.src = 'card-back-img.png';
 
+        // Dibuja las cartas
         function drawCard(card) {
             if (card.flipped || card.matched) {
-                ctx.fillStyle = '#0F0E39';
-                ctx.fillRect(card.x, card.y, card.width, card.height);
-                ctx.fillStyle = '#d4af37';
-                ctx.font = '40px Almendra SC';
-                ctx.fillText(card.id, card.x + card.width / 3, card.y + card.height / 1.7);
+                const image = cardImages[card.id];
+                ctx.drawImage(image, card.x, card.y, card.width, card.height);
             } else {
                 ctx.drawImage(cardBackImage, card.x, card.y, card.width, card.height);
             }
         }
 
+        // Voltea las cartas por click
         canvas.addEventListener('click', (event) => {
             if (!gameStarted) return;
 
@@ -311,6 +377,7 @@
             }
         }
 
+        // Verifica la coincidencia de par
         function checkForMatch() {
             moveCount++;
             const card1 = cards[flippedCards[0]];
@@ -322,6 +389,11 @@
                 card1.matched = true;
                 card2.matched = true;
                 flippedCards = [];
+
+                score += (level === 3 && matchStreak > 0) ? 10 * (matchStreak + 1) : 10;
+                matchStreak++;  // Aumentar racha en nivel 3
+                document.getElementById('score').textContent = `Puntos: ${score}`;
+
                 if (matchedPairs === totalPairs) {
                     winGame();
                 }
@@ -332,22 +404,27 @@
                     flippedCards = [];
                     drawBoard();
                 }, 1000);
+
+                if (level === 3) {
+                    matchStreak = 0;  // Reiniciar racha si se falla en nivel 3
+                }
             }
 
-            if (moveCount % 5 === 0) {
-                levelUp();
+            if (level === 2 && moveCount % 5 === 0) {
+                shuffleRemainingCards();
             }
         }
 
-        function levelUp() {
-            level++;
-        }
+        // Revuelve las cartas restantes al azar para el nivel 2
+        function shuffleRemainingCards() {
+            const unflippedCards = cards.filter(card => !card.flipped && !card.matched);
+            const shuffledIds = shuffleArray(unflippedCards.map(card => card.id));
 
-        function winGame() {
-            clearInterval(timerInterval);
-            winSound.play();
-            backgroundMusic.pause();
-            alert('¡Ganaste!');
+            unflippedCards.forEach((card, index) => {
+                card.id = shuffledIds[index];
+            });
+
+            drawBoard();
         }
 
         function updateTimer() {
@@ -355,10 +432,27 @@
             document.getElementById('timer').textContent = `Tiempo: ${timer} segundos`;
         }
 
-        document.getElementById('startButton').addEventListener('click', startGame);
-        document.getElementById('exitButton').addEventListener('click', exitGame);
-    </script>
+        function winGame() {
+            clearInterval(timerInterval);
+            winSound.play();
+            nextLevel.style.display = "block";  // Mostrar botón de siguiente nivel
+            gameStarted = false;
+        }
 
+        nextLevel.addEventListener('click', () => {
+            level++;
+            if (level <= 3) {
+                startGame();
+            } else {
+                alert("¡Felicidades, has completado todos los niveles!");
+                exitGame();
+            }
+        });
+
+        startButton.addEventListener('click', startGame);
+        exitButton.addEventListener('click', exitGame);
+
+    </script>
 </body>
 
 </html>
