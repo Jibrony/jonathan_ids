@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+</head>
+
+<body>
+    <div id="main">
+        <h2>Bienvenido a la aplicación: {{ message }}</h2>
+
+        <form @submit.prevent="" v-if="!isLoggedIn">
+            <fieldset>
+                <legend>Iniciar Sesión</legend>
+                <label>Email:</label>
+                <input type="email" v-model="email" placeholder="Ingrese su correo electrónico" required>
+                <label>Contraseña:</label>
+                <input type="password" v-model="password" placeholder="Ingrese su contraseña" required>
+                <button type="submit" @click="login">Iniciar Sesión</button>
+                <p v-if="errorMessage">{{ errorMessage }}</p>
+            </fieldset>
+        </form>
+
+        <template v-if="isLoggedIn">
+            <h3>Bienvenido, {{ username }}!</h3>
+            <p>Estás logueado correctamente.</p>
+        </template>
+
+    </div>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script>
+        const { createApp, ref } = Vue;
+
+        createApp({
+            setup() {
+                const message = ref('Bienvenido a la página de inicio');
+                const email = ref('andy@uabcs.mx');
+                const password = ref('qaz123');
+                const isLoggedIn = ref(false);
+                const username = ref('');
+                const errorMessage = ref('');
+
+                return {
+                    message,
+                    email,
+                    password,
+                    isLoggedIn,
+                    username,
+                    errorMessage
+                };
+            },
+            methods: {
+                login() {
+                    fetch('./users.json')
+                        .then(response => response.json())
+                        .then(response => {
+                            console.log(response)
+                            response.forEach((element) => {
+                                if (element.email === this.email && element.password === this.password) {
+                                    this.isLoggedIn = true;
+                                    this.username = element.username;
+                                } else {
+                                    this.errorMessage = 'Correo o contraseña incorrectos'; 
+                                }
+                            });
+                        })
+                        .catch(err => {
+                            this.errorMessage = 'Hubo un error al intentar iniciar sesión';
+                        });
+                },
+
+            }
+        }).mount('#main');
+
+    </script>
+</body>
+
+</html>
