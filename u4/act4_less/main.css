@@ -1,0 +1,77 @@
+body {
+  background-color: #ecf0f1;
+  color: #2c3e50;
+  font-family: Arial, sans-serif;
+}
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #F1DEC6;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+h1 {
+  color: #e74c3c;
+}
+.form fieldset {
+  border: 1px solid #e74c3c;
+  border-radius: 4px;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+.form fieldset legend {
+  color: #e74c3c;
+  font-weight: bold;
+}
+.form fieldset input[type="text"],
+.form fieldset input[type="password"] {
+  width: 97%;
+  padding: 8px;
+  margin-top: 5px;
+  border: 1px solid #e74c3c;
+  border-radius: 4px;
+}
+.form fieldset ul {
+  list-style-type: none;
+  padding: 0;
+}
+.form fieldset ul li {
+  margin-bottom: 10px;
+}
+.form fieldset ul li label {
+  display: flex;
+  align-items: center;
+  padding: 5px;
+  border-radius: 4px;
+  color: white;
+}
+.form fieldset ul li label input[type="checkbox"] {
+  margin-right: 10px;
+}
+.form fieldset .btn {
+  background-color: #c0392b;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.form fieldset .btn:hover {
+  background-color: #962d22;
+}
+ul li:nth-child(1) label {
+  background-color: #e74c3c;
+}
+ul li:nth-child(2) label {
+  background-color: #f39c12;
+}
+ul li:nth-child(3) label {
+  background-color: #f1c40f;
+}
+ul li:nth-child(4) label {
+  background-color: #2ecc71;
+}
+ul li:nth-child(5) label {
+  background-color: #3498db;
+}
