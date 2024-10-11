@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Movie Details</title>
+    <link rel="stylesheet" href="./details.css">
+</head>
+
+<body>
+
+    <div id="main">
+        <div class="container">
+            <!-- Div para la imagen del poster -->
+            <div class="poster">
+                <img :src="'https://media.themoviedb.org/t/p/w440_and_h660_face/' + movie.poster_path"
+                    :alt="movie.original_title">
+            </div>
+
+            <!-- Div para los detalles de la película -->
+            <div class="details">
+                <div class="title">
+                    <h1>{{ movie.original_title }}</h1>
+                </div>
+
+                <div class="release-date">
+                    <p><strong>Release Date:</strong> {{ movie.release_date }}</p>
+                </div>
+
+                <div class="synopsis">
+                    <p><strong>Synopsis:</strong> {{ movie.overview }}</p>
+                </div>
+
+                <div class="rating">
+                    <p><strong>Rating:</strong> {{ movie.vote_average }}</p>
+                </div>
+
+                <!-- Calificación del usuario -->
+                <div class="user-rating">
+                    <p><strong>Your Rating:</strong> {{ userRating !== null ? userRating : 'No rating given' }}</p>
+
+                    <!-- Mostrar radio buttons solo si el rating está activado -->
+                    <div v-if="isRatingActive" class="radio-input">
+                        <!-- Radio buttons de 1 a 10 -->
+                        <label v-for="n in 10" :key="n">
+                            <input :value="n" name="value-radio" :id="'value-' + n" type="radio" v-model="userRating" @change="saveRating">
+                            <span>{{ n }}</span>
+                        </label>
+                        <span class="selection"></span>
+                    </div>
+
+                    <!-- Botón para activar el rating o remover calificación -->
+                    <button class="btn-rate" @click="toggleRating">
+                        {{ isRatingActive ? (userRating !== null ? 'Remove Rating' : 'Cancel Rating') : 'Give Rating' }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script>
+        const { createApp, ref, onMounted } = Vue;
+
+        createApp({
+            setup() {
+                const movie = ref({});
+                const userRating = ref(null);
+                const isRatingActive = ref(false); // Controla si el usuario puede calificar
+                let movieId = null;
+
+                // Función para alternar entre activar el rating y remover la calificación
+                const toggleRating = () => {
+                    if (isRatingActive.value && userRating.value !== null) {
+                        // Si ya hay una calificación, removerla
+                        userRating.value = null;
+                        localStorage.removeItem(`rating_${movieId}`);
+                    } else {
+                        // Activar la posibilidad de calificar
+                        isRatingActive.value = !isRatingActive.value;
+                    }
+                };
+
+                // Función para guardar la calificación en localStorage
+                const saveRating = () => {
+                    localStorage.setItem(`rating_${movieId}`, userRating.value);
+                };
+
+                onMounted(() => {
+                    const urlParams = new URLSearchParams(window.location.search);
+                    movieId = urlParams.get('id');
+
+                    const myHeaders = new Headers();
+                    myHeaders.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxODRmYWM0YWFmMTk1ODE4NjE3ZjM3ZmJjZjc5YjQwMCIsIm5iZiI6MTcyODQ5NDY2Ny4xODg3OTksInN1YiI6IjY3MDVkNjU3MDAwMDAwMDAwMDU4NzNhYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.0Cz6St46uAwlRomtJWU0ArDno9044-6O8Sp77esPoy4");
+
+                    const requestOptions = {
+                        method: "GET",
+                        headers: myHeaders,
+                        redirect: "follow"
+                    };
+
+                    // Obtener detalles de la película
+                    fetch(`https://api.themoviedb.org/3/movie/${movieId}`, requestOptions)
+                        .then(response => response.json())
+                        .then(result => {
+                            movie.value = result;
+
+                            // Recuperar la calificación guardada en localStorage si existe
+                            const savedRating = localStorage.getItem(`rating_${movieId}`);
+                            if (savedRating) {
+                                userRating.value = parseInt(savedRating);
+                                isRatingActive.value = true; // Mostrar los radio buttons si ya hay calificación
+                            }
+                        })
+                        .catch(error => console.error(error));
+                });
+
+                return {
+                    movie,
+                    userRating,
+                    isRatingActive,
+                    toggleRating,
+                    saveRating
+                };
+            }
+        }).mount('#main');
+    </script>
+</body>
+
+</html>

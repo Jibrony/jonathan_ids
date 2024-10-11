@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Movies</title>
+	<link rel="stylesheet" href="./catalog.css">
+
+</head>
+
+<body>
+
+	<div id="main">
+        <div class="card" v-for="movie in movies" @click="redirectToMovie(movie)">
+            <img v-bind:src="'https://media.themoviedb.org/t/p/w440_and_h660_face/' + movie.poster_path"
+                v-bind:alt="movie.original_title" alt=""/>
+            <div class="container">
+                <h4><b>{{ movie.original_title }}</b></h4>
+                <p>{{ movie.release_date }}</p>
+				<p>Rate: {{ movie.vote_average }}%</p>
+            </div>
+        </div>
+    </div>
+
+	<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+	<script>
+		const { createApp, ref } = Vue
+
+		createApp({
+			setup() {
+
+				const name_app = ref('Mi primer app')
+				const movies = ref([])
+
+				return {
+					name_app,
+					movies
+				}
+
+			},
+			methods: {
+				redirectToMovie(movie) {
+					window.location.href = `moviedetail.html?id=${movie.id}`;
+				}
+			},
+			mounted() {
+
+				console.log("Hola")
+
+				let is_log = localStorage.getItem("is_log");
+				let username = localStorage.getItem("username");
+
+				if (is_log == null && username == null) {
+					window.location.href = "u3_act19.html";
+				}
+
+				const myHeaders = new Headers();
+				myHeaders.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxODRmYWM0YWFmMTk1ODE4NjE3ZjM3ZmJjZjc5YjQwMCIsIm5iZiI6MTcyODQ5NDY2Ny4xODg3OTksInN1YiI6IjY3MDVkNjU3MDAwMDAwMDAwMDU4NzNhYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.0Cz6St46uAwlRomtJWU0ArDno9044-6O8Sp77esPoy4");
+
+				const requestOptions = {
+					method: "GET",
+					headers: myHeaders,
+					redirect: "follow"
+				};
+
+				fetch("https://api.themoviedb.org/3/discover/movie", requestOptions)
+					.then((response) => response.json())
+					.then((result) => {
+
+						console.log(result)
+
+						this.movies = result.results
+
+					})
+					.catch((error) => console.error(error));
+
+			}
+		}).mount('#main')
+	</script>
+</body>
+
+</html>

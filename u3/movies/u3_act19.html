@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Actividad 19</title>
+	<link rel="stylesheet" href="./styles.css">
+</head>
+
+<body>
+
+	<fieldset class="form_container" id="main">
+        <legend>Acceso</legend>
+
+        <form @submit.prevent="login">
+            <fieldset>
+                <legend>Email</legend>
+                <input type="text" v-model="email" placeholder="Write Here">
+            </fieldset>
+
+            <fieldset>
+                <legend><label>Password</label></legend>
+                <input type="password" v-model="password" placeholder="Write Here">
+            </fieldset>
+
+            <button type="submit">Acceder</button>
+        </form>
+    </fieldset>
+
+
+	<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+	<script>
+		const { createApp, ref } = Vue
+
+		createApp({
+			setup() {
+
+				const name_app = ref('Mi primer app')
+				let email = ref('AndreyArce')
+				let password = ref('qwop1290')
+				let is_log = ref(false)
+
+				return {
+					name_app,
+					email,
+					password,
+					is_log
+				}
+
+			},
+			methods: {
+
+				login() {
+					console.log(this.email)
+					console.log(this.password)
+
+
+					const myHeaders = new Headers();
+					myHeaders.append("Content-Type", "application/json");
+					myHeaders.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIzN2IxMDAyZjFjYmY3N2JkMTg1ZDg3NDkyMmFlZWU3MCIsInN1YiI6IjY1MTRiNzhlYmRkNTY4MDEzZjU4MzBjOSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.OX11ObYS13YEQravRhAAKDfzpifakVGHdTnmxJ3rEeo");
+
+					const raw = JSON.stringify({
+						"username": this.email,
+						"password": this.password,
+						"request_token": ""
+					});
+
+					const requestOptions = {
+						method: "POST",
+						headers: myHeaders,
+						body: raw,
+						redirect: "follow"
+					};
+
+					fetch("https://api.themoviedb.org/3/authentication/token/validate_with_login", requestOptions)
+						.then((response) => response.json())
+						.then((result) => {
+
+							console.log(result)
+							if (result.success) {
+
+								this.is_log = true
+								window.location.href = "movies.html";
+
+								localStorage.setItem("is_log", this.is_log);
+								localStorage.setItem("username", this.email);
+
+							} else {
+								alert("Verifique la información")
+							}
+
+						})
+						.catch((error) => console.error(error));
+
+					/*
+					fetch ("users.json")
+					.then(response => response.json())
+					.then(response => {
+						
+						response.forEach((e) => {
+	
+							if (e.email == this.email) {
+								if (e.password == this.password) {
+	
+									this.is_log = true 
+	
+									localStorage.setItem("user_data", JSON.stringify(e));
+								}
+							}
+	
+						});
+	
+						if (!this.is_log) {
+							alert("Verifique su información")
+						}
+	
+					});
+					*/
+				}
+			},
+			mounted() {
+
+				console.log("Hola")
+
+
+				let is_log = localStorage.getItem("is_log");
+				let username = localStorage.getItem("username");
+
+				if (is_log != null && username != null) {
+
+					window.location.href = "movies.html";
+				}
+
+
+			}
+		}).mount('#main') 
+	</script>
+</body>
+
+</html>
