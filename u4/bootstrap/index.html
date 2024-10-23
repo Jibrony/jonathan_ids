@@ -25,27 +25,27 @@
     <div class="container shadow-lg rounded">
         <div class="row align-items-center">
             <div class="col-12 col-md-6">
-                <!-- Imagen decorativa -->
                 <img class="bg-img img-fluid rounded" src="https://img.freepik.com/fotos-premium/cientifico-trabajando-diligentemente-laboratorio-alta-tecnologia_497783-168.jpg" alt="">
             </div>
             <div class="col-12 col-md-6">
-                <!-- Logo y Formulario -->
                 <div class="text-center">
                     <img class="logo-img img-fluid" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR_XtCgHXOTINsOKLRHF_pIsDmP0o_TmZ4PEA&s" alt="">
                 </div>
                 <h3>Accede al Panel Administrador</h3>
-                <form>
+                <form method="POST" action="./app/AuthController.php">
                     <div class="mb-3">
                         <label for="username" class="form-label">Correo</label>
-                        <input type="text" class="form-control" id="username" aria-describedby="usernameHelp">
+                        <input type="email" class="form-control" name="email" aria-describedby="usernameHelp" required>
                         <div id="usernameHelp" class="form-text">*Necesitamos un nombre de usuario para iniciar sesión.</div>
                     </div>
                     <div class="mb-5">
                         <label for="password" class="form-label">Contraseña</label>
-                        <input type="password" class="form-control" id="password" aria-describedby="passwordHelp">
+                        <input type="password" class="form-control" name="password" aria-describedby="passwordHelp" required>
                         <div id="passwordHelp" class="form-text">*Necesitamos una contraseña para iniciar sesión.</div>
                     </div>
                     <button type="submit" class="btn btn-primary custom-width">Iniciar Sesión</button>
+
+                    <input type="hidden" name="action" value="login">
                 </form>
             </div>
         </div>
