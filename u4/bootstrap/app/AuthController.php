@@ -1,6 +1,8 @@
 <?php
 
-iF(isset ($_POST['action'])){
+session_start();
+
+if(isset ($_POST['action'])){
     switch($_POST['action']){
         case 'login':
             $email = $_POST['email'];
@@ -8,6 +10,7 @@ iF(isset ($_POST['action'])){
 
             $authController = new AuthController();
             $authController->login($email, $password);
+            break;
     }
 }
 
@@ -40,6 +43,28 @@ class AuthController {
         } else {
             header('Location: ../index.html');
         }
+    }
+
+    public function getProducts() {
+        session_start();
+        if (!isset($_SESSION['token'])) {
+            header('Location: ../index.html');
+            exit();
+        }
+
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => 'https://crud.jonathansoto.mx/api/products',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_HTTPHEADER => array(
+                'Authorization: Bearer ' . $_SESSION['token'],
+            ),
+        ));
+
+        $response = curl_exec($curl);
+        curl_close($curl);
+
+        return json_decode($response, true)['data'] ?? [];
     }
 }
 
