@@ -1,9 +1,10 @@
 <?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
-session_start();
-
-if(isset ($_POST['action'])){
-    switch($_POST['action']){
+if (isset($_POST['action'])) {
+    switch ($_POST['action']) {
         case 'login':
             $email = $_POST['email'];
             $password = $_POST['password'];
@@ -14,58 +15,120 @@ if(isset ($_POST['action'])){
     }
 }
 
-class AuthController {
-    public function login($email, $password) {
+class AuthController
+{
+    public function login($email, $password)
+    {
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-        CURLOPT_URL => 'https://crud.jonathansoto.mx/api/login',
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_ENCODING => '',
-        CURLOPT_MAXREDIRS => 10,
-        CURLOPT_TIMEOUT => 0,
-        CURLOPT_FOLLOWLOCATION => true,
-        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-        CURLOPT_CUSTOMREQUEST => 'POST',
-        CURLOPT_POSTFIELDS => array('email' => $email,'password' => $password),
+            CURLOPT_URL => 'https://crud.jonathansoto.mx/api/login',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS => array('email' => $email, 'password' => $password),
         ));
 
         $response = curl_exec($curl);
-
         curl_close($curl);
-        echo $response;
 
-        $response = json_decode($response);
-        if (isset ($response -> message) == 'Registro obtenido correctamente' && is_object($response -> data)) {
-            // Redireccionar a home.html
-            header('Location: ../home.html');
+        $response = json_decode($response, true);
+
+        if (isset($response['message']) && $response['message'] === 'Registro obtenido correctamente' && isset($response['data']['token'])) {
+            $_SESSION['token'] = $response['data']['token'];
+            header('Location: ../home.php');
             exit();
         } else {
             header('Location: ../index.html');
+            exit();
         }
     }
 
-    public function getProducts() {
+    public function getProducts()
+    {
         session_start();
+
         if (!isset($_SESSION['token'])) {
             header('Location: ../index.html');
             exit();
         }
 
         $curl = curl_init();
+
         curl_setopt_array($curl, array(
             CURLOPT_URL => 'https://crud.jonathansoto.mx/api/products',
             CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'GET',
             CURLOPT_HTTPHEADER => array(
-                'Authorization: Bearer ' . $_SESSION['token'],
+                'Authorization: Bearer ' . $_SESSION['token']
             ),
         ));
 
         $response = curl_exec($curl);
         curl_close($curl);
 
-        return json_decode($response, true)['data'] ?? [];
+        $allProducts = json_decode($response, true)['data'] ?? [];
+
+        $availableProducts = array_filter($allProducts, function ($product) {
+            if (!isset($product['cover']) || empty($product['cover'])) {
+                return false;
+            }
+
+            foreach ($product['presentations'] as $presentation) {
+                if ($presentation['status'] === 'activo' && $presentation['stock'] > 0) {
+                    return true;
+                }
+            }
+
+            return false;
+        });
+
+        return $availableProducts;
+    }
+
+    public function getProductById($productId)
+    {
+        if (!isset($_SESSION['token'])) {
+            header('Location: ../index.html');
+            exit();
+        }
+
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => 'https://crud.jonathansoto.mx/api/products?id=' . intval($productId),
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'GET',
+            CURLOPT_HTTPHEADER => array(
+                'Authorization: Bearer ' . $_SESSION['token']
+            ),
+        ));
+
+        $response = curl_exec($curl);
+
+        if ($response === false) {
+            echo 'Error en la solicitud: ' . curl_error($curl);
+            exit;
+        }
+
+        curl_close($curl);
+
+        $productData = json_decode($response, true);
+
+        return $productData['data'] ?? null;
     }
 }
-
-?>
