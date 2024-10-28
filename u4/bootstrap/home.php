@@ -59,9 +59,9 @@ $products = $authController->getProducts();
             height: 400px;
         }
 
-        .card img {
-            width: 175px;
-            height: 200px;
+        .card-img-top {
+            width: 275px;
+            height: 225px;
             margin: auto;
             margin-top: 20px;
         }
@@ -188,44 +188,38 @@ $products = $authController->getProducts();
 
             <div class="row">
                 <?php foreach ($products as $product): ?>
-                    <?php
-                    $available_presentations = array_filter($product['presentations'], function ($presentation) {
-                        return $presentation['status'] === 'activo' && $presentation['stock'] > 0;
-                    });
+                    <div class="col-md-3 mb-4">
+                        <div class="card">
+                            <img src="<?php echo htmlspecialchars($product['cover']) ?>" class="card-img-top"
+                            alt="<?php echo htmlspecialchars($product['name']) ?>"
+                            onerror="this.onerror=null; this.src='https://ui-avatars.com/api/?name=<?php echo urlencode($product['name']); ?>';">
+                            <div class="card-body">
+                                <h5 class="card-title"><?php echo htmlspecialchars($product['name']) ?></h5>
 
-                    if (count($available_presentations) > 0):
-                    ?>
-                        <div class="col-md-3 mb-4">
-                            <div class="card">
-                                <img src="<?= htmlspecialchars($product['cover']) ?>" class="card-img-top" alt="<?= htmlspecialchars($product['name']) ?>">
-                                <div class="card-body">
-                                    <h5 class="card-title"><?= htmlspecialchars($product['name']) ?></h5>
+                                <!-- Verificar si hay alguna presentación disponible y mostrar el precio del primer elemento, si existe -->
+                                <?php if (!empty($product['presentations'])): ?>
+                                    <p><strong>Precio:</strong> $<?= number_format($product['presentations'][0]['price'][0]['amount'], 2) ?></p>
+                                <?php else: ?>
+                                    <p>No hay precios disponibles para este producto.</p>
+                                <?php endif; ?>
 
-                                    <?php if (!empty($available_presentations)): ?>
-                                        <?php
-                                        ?>
-                                        <p><strong>Precio:</strong> $<?= number_format($available_presentations[0]['price'][0]['amount'], 2) ?></p>
-                                    <?php else: ?>
-                                        <p>No hay precios disponibles para este producto.</p>
-                                    <?php endif; ?>
+                                <div class="btns">
+                                    <a
+                                        href="./details.php?slug=<?php echo htmlspecialchars($product['slug']); ?>"
+                                        class="btn btn-primary">
+                                        Details
+                                    </a>
 
-                                    <div class="btns">
-                                        <button
-                                            type="button"
-                                            class="btn btn-primary"
-                                            onclick="window.location.href='./product.php?id=<?= htmlspecialchars($product['id']) ?>'">
-                                            Details
-                                        </button>
 
-                                        <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#exampleModal">Edit</button>
-                                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">Delete</button>
-                                    </div>
+                                    <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#exampleModal">Edit</button>
+                                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">Delete</button>
                                 </div>
                             </div>
                         </div>
-                    <?php endif; ?>
+                    </div>
                 <?php endforeach; ?>
             </div>
+
         </div>
 
         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

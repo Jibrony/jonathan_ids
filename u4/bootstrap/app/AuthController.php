@@ -78,24 +78,24 @@ class AuthController
 
         $allProducts = json_decode($response, true)['data'] ?? [];
 
-        $availableProducts = array_filter($allProducts, function ($product) {
-            if (!isset($product['cover']) || empty($product['cover'])) {
-                return false;
-            }
+        // $availableProducts = array_filter($allProducts, function ($product) {
+        //     if (!isset($product['cover']) || empty($product['cover'])) {
+        //         return false;
+        //     }
 
-            foreach ($product['presentations'] as $presentation) {
-                if ($presentation['status'] === 'activo' && $presentation['stock'] > 0) {
-                    return true;
-                }
-            }
+        //     foreach ($product['presentations'] as $presentation) {
+        //         if ($presentation['status'] === 'activo' && $presentation['stock'] > 0) {
+        //             return true;
+        //         }
+        //     }
 
-            return false;
-        });
+        //     return false;
+        // });
 
-        return $availableProducts;
+        return $allProducts;
     }
 
-    public function getProductById($productId)
+    public function getProductBySlug($productSlug)
     {
         if (!isset($_SESSION['token'])) {
             header('Location: ../index.html');
@@ -105,7 +105,7 @@ class AuthController
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://crud.jonathansoto.mx/api/products?id=' . intval($productId),
+            CURLOPT_URL => 'https://crud.jonathansoto.mx/api/products/slug/' . urlencode($productSlug),
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
