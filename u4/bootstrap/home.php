@@ -1,9 +1,9 @@
 <?php
 session_start();
-require_once './app/AuthController.php';
+include_once './app/ProductsController.php';
 
-$authController = new AuthController();
-$products = $authController->getProducts();
+$productController = new ProductsController();
+$products = $productController->getProducts();
 ?>
 
 <!DOCTYPE html>
@@ -185,14 +185,14 @@ $products = $authController->getProducts();
         </nav>
         <div class="main-content">
             <h1>Available Products</h1>
-
+            <a type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAdd">Add</a>
             <div class="row">
                 <?php foreach ($products as $product): ?>
                     <div class="col-md-3 mb-4">
                         <div class="card">
                             <img src="<?php echo htmlspecialchars($product['cover']) ?>" class="card-img-top"
-                            alt="<?php echo htmlspecialchars($product['name']) ?>"
-                            onerror="this.onerror=null; this.src='https://ui-avatars.com/api/?name=<?php echo urlencode($product['name']); ?>';">
+                                alt="<?php echo htmlspecialchars($product['name']) ?>"
+                                onerror="this.onerror=null; this.src='https://ui-avatars.com/api/?name=<?php echo urlencode($product['name']); ?>';">
                             <div class="card-body">
                                 <h5 class="card-title"><?php echo htmlspecialchars($product['name']) ?></h5>
 
@@ -239,6 +239,46 @@ $products = $authController->getProducts();
                 </div>
             </div>
         </div>
+
+        <div class="modal fade" id="modalAdd" tabindex="-1" aria-labelledby="modalAddLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="modalAddLabel">Add Product</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="modalFormAdd" method="POST" action="./app/AddProductController.php">
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Name</label>
+                                <input type="text" class="form-control" id="name" name="name" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="slug" class="form-label">Slug</label>
+                                <input type="text" class="form-control" id="slug" name="slug" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="description" class="form-label">Description</label>
+                                <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="features" class="form-label">Features</label>
+                                <textarea class="form-control" id="features" name="features" rows="3" required></textarea>
+                            </div>
+
+                            <input type="hidden" name="action" value="addProduct">
+                            <button type="submit" class="btn btn-primary">Save changes</button>
+
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
 
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>

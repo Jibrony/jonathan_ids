@@ -1,8 +1,8 @@
 <?php
 session_start();
-require_once './app/AuthController.php';
+require_once './app/ProductsController.php';
 
-$authController = new AuthController();
+$productController = new ProductsController();
 $productSlug = isset($_GET['slug']) ? $_GET['slug'] : null;
 
 if ($productSlug === null) {
@@ -10,7 +10,7 @@ if ($productSlug === null) {
     exit;
 }
 
-$product = $authController->getProductBySlug($productSlug);
+$product = $productController->getProductBySlug($productSlug);
 
 if ($product === null) {
     echo "Producto no encontrado.";
