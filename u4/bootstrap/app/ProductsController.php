@@ -1,14 +1,35 @@
-<?php 
-	if (session_status() === PHP_SESSION_NONE) {
-        session_start();
-    }
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
-class ProductsController 
+var_dump($_POST);
+
+var_dump($_GET);
+
+if (isset($_POST['action'])) {
+    switch ($_POST['action']) {
+        case 'editProduct':
+            //Sin el id no se puede editar el producto
+            if (isset($_GET["id"])) {
+                $id = $_GET["id"];
+            };
+            $name = $_POST['name'];
+            $slug = $_POST['slug'];
+            $description = $_POST['description'];
+            $features = $_POST['features'];
+
+            $productController = new ProductsController();
+            $productController->updateProduct($id, $name, $slug, $description, $features);
+            break;
+    }
+}
+
+class ProductsController
 {
-	
-	public function getProducts()
-	{
-        session_start();
+
+    public function getProducts()
+    {
 
         if (!isset($_SESSION['token'])) {
             header('Location: ../index.html');
@@ -37,19 +58,17 @@ class ProductsController
         $allProducts = json_decode($response, true)['data'] ?? [];
 
         return $allProducts;
+    }
 
-	}
-
-	public function getProductBySlug($productSlug)
-	{
-        session_start();
+    public function getProductBySlug($productSlug)
+    {
 
         if (!isset($_SESSION['token'])) {
             header('Location: ../index.html');
             exit();
         }
 
-		$curl = curl_init();
+        $curl = curl_init();
 
         curl_setopt_array($curl, array(
             CURLOPT_URL => 'https://crud.jonathansoto.mx/api/products/slug/' . urlencode($productSlug),
@@ -77,8 +96,39 @@ class ProductsController
         $productData = json_decode($response, true);
 
         return $productData['data'] ?? null;
+    }
 
-	}
+    public function updateProduct($id, $name, $slug, $description, $features)
+    {
+        $newDataProduct = "name=".urlencode($name)."&slug=".urlencode($slug)."&description=".urlencode($description)."&features=".urlencode($features)."&id=".urlencode($id);
+
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => 'https://crud.jonathansoto.mx/api/products',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'PUT',
+            CURLOPT_POSTFIELDS => $newDataProduct,
+            CURLOPT_HTTPHEADER => array(
+                'Authorization: Bearer 263|gdMhzAaBx8efmZLngQorpLwQfBoseuLRIyRqro2z'
+            )
+        ));
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+
+        $response = json_decode($response);
+
+        if (isset($response->code) && $response->code > 0) {
+            header('Location: ../home.php?status=yaquedo');
+        } else {
+            echo 'Error al actualizar el producto';
+        }
+    }
 }
-
-?>

@@ -4,6 +4,7 @@ include_once './app/ProductsController.php';
 
 $productController = new ProductsController();
 $products = $productController->getProducts();
+
 ?>
 
 <!DOCTYPE html>
@@ -196,7 +197,6 @@ $products = $productController->getProducts();
                             <div class="card-body">
                                 <h5 class="card-title"><?php echo htmlspecialchars($product['name']) ?></h5>
 
-                                <!-- Verificar si hay alguna presentación disponible y mostrar el precio del primer elemento, si existe -->
                                 <?php if (!empty($product['presentations'])): ?>
                                     <p><strong>Precio:</strong> $<?= number_format($product['presentations'][0]['price'][0]['amount'], 2) ?></p>
                                 <?php else: ?>
@@ -204,22 +204,54 @@ $products = $productController->getProducts();
                                 <?php endif; ?>
 
                                 <div class="btns">
-                                    <a
-                                        href="./details.php?slug=<?php echo htmlspecialchars($product['slug']); ?>"
-                                        class="btn btn-primary">
-                                        Details
-                                    </a>
+                                    <a href="./details.php?slug=<?php echo htmlspecialchars($product['slug']); ?>" class="btn btn-primary">Details</a>
+                                    <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modalEdit<?php echo htmlspecialchars($product['id']); ?>">
+                                        Edit
+                                    </button>
 
-
-                                    <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#exampleModal">Edit</button>
                                     <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">Delete</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- El modal va dentro del foreach, ya que, cada producto tiene su propio boton por asi decirlo de editar, por ende
+                     obtenemos el id facilmenta, ya que sin el id, no se puede modificar -->
+                    <div class="modal fade" id="modalEdit<?php echo htmlspecialchars($product['id']); ?>" tabindex="-1" aria-labelledby="modalEditLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="modalEditLabel">Edit Product</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form id="modalFormEdit" method="POST" action="./app/ProductsController.php?id=<?php echo htmlspecialchars($product['id']); ?>">
+                                        <div class="mb-3">
+                                            <label for="editName" class="form-label">Name</label>
+                                            <input type="text" class="form-control" id="editName" name="name" value="<?php echo ($product['name']); ?>" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="editSlug" class="form-label">Slug</label>
+                                            <input type="text" class="form-control" id="editSlug" name="slug" value="<?php echo ($product['slug']); ?>" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="editDescription" class="form-label">Description</label>
+                                            <input class="form-control" id="editDescription" name="description" value="<?php echo ($product['description']); ?>" rows="3" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="editFeatures" class="form-label">Features</label>
+                                            <input class="form-control" id="editFeatures" name="features" value="<?php echo ($product['features']); ?>" rows="3" required>
+                                        </div>
+
+                                        <button type="submit" class="btn btn-primary">Save changes</button>
+                                        <input type="hidden" name="action" value="editProduct">
+                                    </form>
                                 </div>
                             </div>
                         </div>
                     </div>
                 <?php endforeach; ?>
             </div>
-
         </div>
 
         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -265,6 +297,10 @@ $products = $productController->getProducts();
                                 <label for="features" class="form-label">Features</label>
                                 <textarea class="form-control" id="features" name="features" rows="3" required></textarea>
                             </div>
+                            <div class="mb-3">
+                                <label for="brand" class="form-label">Brand</label>
+                                <input class="form-control" id="brand" name="brand" rows="3" required>
+                            </div>
 
                             <input type="hidden" name="action" value="addProduct">
                             <button type="submit" class="btn btn-primary">Save changes</button>
@@ -277,8 +313,6 @@ $products = $productController->getProducts();
                 </div>
             </div>
         </div>
-
-
 
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>

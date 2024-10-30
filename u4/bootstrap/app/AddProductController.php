@@ -39,7 +39,7 @@ class AddProductController
         CURLOPT_POSTFIELDS => array('name' => $name, 'slug' => $slug, 'description' => $description, 'features' => $features),
         CURLOPT_HTTPHEADER => array(
             'Authorization: Bearer ' . $_SESSION['token']
-        ),
+        )
     ));
 
     $response = curl_exec($curl);
