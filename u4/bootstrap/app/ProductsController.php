@@ -22,6 +22,11 @@ if (isset($_POST['action'])) {
             $productController = new ProductsController();
             $productController->updateProduct($id, $name, $slug, $description, $features);
             break;
+        case 'deleteProduct':
+            $id = $_POST["id"];
+            $deleteController = new ProductsController();
+            $deleteController->deleteProduct($id);
+            break;
     }
 }
 
@@ -100,7 +105,7 @@ class ProductsController
 
     public function updateProduct($id, $name, $slug, $description, $features)
     {
-        $newDataProduct = "name=".urlencode($name)."&slug=".urlencode($slug)."&description=".urlencode($description)."&features=".urlencode($features)."&id=".urlencode($id);
+        $newDataProduct = "name=" . urlencode($name) . "&slug=" . urlencode($slug) . "&description=" . urlencode($description) . "&features=" . urlencode($features) . "&id=" . urlencode($id);
 
         $curl = curl_init();
 
@@ -130,5 +135,37 @@ class ProductsController
         } else {
             echo 'Error al actualizar el producto';
         }
+    }
+
+    public function deleteProduct($id)
+    {
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => 'https://crud.jonathansoto.mx/api/products/'.urlencode($id),
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'DELETE',
+            CURLOPT_HTTPHEADER => array(
+                'Authorization: Bearer 263|gdMhzAaBx8efmZLngQorpLwQfBoseuLRIyRqro2z'
+            ),
+        ));
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+
+        $response = json_decode($response);
+
+
+        // if (isset($response->code) && $response->code > 0) {
+        //     header('Location: ../home.php?status=palobby');
+        // } else {
+        //     echo 'Error al actualizar el producto';
+        // }
     }
 }

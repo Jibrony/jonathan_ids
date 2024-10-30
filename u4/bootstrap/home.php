@@ -61,8 +61,8 @@ $products = $productController->getProducts();
         }
 
         .card-img-top {
-            width: 275px;
-            height: 225px;
+            width: 250px;
+            height: 200px;
             margin: auto;
             margin-top: 20px;
         }
@@ -208,8 +208,11 @@ $products = $productController->getProducts();
                                     <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modalEdit<?php echo htmlspecialchars($product['id']); ?>">
                                         Edit
                                     </button>
-
-                                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">Delete</button>
+                                    <form action="./app/ProductsController.php" id='delete-form-<?php echo htmlspecialchars($product['id']) ?>' method="POST">
+                                        <input type="hidden" name="id" value="<?php echo htmlspecialchars($product['id']); ?>">
+                                        <input type="hidden" name="action" value="deleteProduct">
+                                    </form>
+                                    <button type="button" class="btn btn-danger target" value="<?php echo htmlspecialchars($product['id']); ?>">Delete</button>
                                 </div>
                             </div>
                         </div>
@@ -297,10 +300,10 @@ $products = $productController->getProducts();
                                 <label for="features" class="form-label">Features</label>
                                 <textarea class="form-control" id="features" name="features" rows="3" required></textarea>
                             </div>
-                            <div class="mb-3">
+                            <!-- <div class="mb-3">
                                 <label for="brand" class="form-label">Brand</label>
                                 <input class="form-control" id="brand" name="brand" rows="3" required>
-                            </div>
+                            </div> -->
 
                             <input type="hidden" name="action" value="addProduct">
                             <button type="submit" class="btn btn-primary">Save changes</button>
@@ -314,6 +317,34 @@ $products = $productController->getProducts();
             </div>
         </div>
 
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+            target = document.querySelectorAll('.target');
+            target.forEach(target => {
+                target.addEventListener('click', function() {
+                    console.log(target.value);
+                    swal({
+                            title: "Estas seguro?",
+                            text: "¡Una vez eliminado, no podrás recuperar este archivo imaginario!",
+                            icon: "warning",
+                            buttons: true,
+                            dangerMode: true,
+                        })
+                        .then((willDelete) => {
+                            if (willDelete) {
+                                document.getElementById(`delete-form-${target.value}`).submit()
+                                swal("Poof! ¡Tu archivo imaginario ha sido eliminado!", {
+                                    icon: "success",
+                                    
+                                });
+                            }
+                        });
+                })
+            })
+        });
+        </script>
+
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
