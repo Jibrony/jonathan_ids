@@ -131,7 +131,7 @@ class ProductsController
         $response = json_decode($response);
 
         if (isset($response->code) && $response->code > 0) {
-            header('Location: ../home.php?status=yaquedo');
+            header('Location: ../home?status=yaquedo');
         } else {
             echo 'Error al actualizar el producto';
         }
@@ -163,7 +163,7 @@ class ProductsController
 
 
         if (isset($response->code) && $response->code > 0) {
-            header('Location: ../home.php?status=palobby');
+            header('Location: ../home?status=palobby');
         } else {
             echo 'Error al actualizar el producto';
         }

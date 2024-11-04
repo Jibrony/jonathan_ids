@@ -1,0 +1,17 @@
+# Activa el motor de reescritura
+RewriteEngine On
+
+# Enmascarar rutas
+RewriteRule ^home$ home.php [L]
+RewriteRule ^product/([^/]+)/?$ product.php?slug=$1 [L,QSA]
+RewriteRule ^auth$ app/AuthController.php [L]
+RewriteRule ^resources$ app/ProductController.php [L]
+
+# Redirigir a index.html si la URL está vacía
+RewriteCond %{REQUEST_URI} ^/$
+RewriteRule ^$ index.html [L]
+
+# Configuración de página de error personalizada
+ErrorDocument 404 /404.html
+ErrorDocument 403 /403.html
+

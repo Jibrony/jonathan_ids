@@ -40,7 +40,7 @@ class AuthController
 
         if (isset($response['message']) && $response['message'] === 'Registro obtenido correctamente' && isset($response['data']['token'])) {
             $_SESSION['token'] = $response['data']['token'];
-            header('Location: ../home.php');
+            header('Location: ../home');
             exit();
         } else {
             header('Location: ../index.html');
