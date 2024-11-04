@@ -151,7 +151,7 @@ class ProductsController
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => 'DELETE',
             CURLOPT_HTTPHEADER => array(
-                'Authorization: Bearer 263|gdMhzAaBx8efmZLngQorpLwQfBoseuLRIyRqro2z'
+                'Authorization: Bearer 130|VWhjXnncQGInohnHeCfPYQW6Md2RUHG9yRs1cjt3'
             ),
         ));
 
@@ -162,10 +162,10 @@ class ProductsController
         $response = json_decode($response);
 
 
-        // if (isset($response->code) && $response->code > 0) {
-        //     header('Location: ../home.php?status=palobby');
-        // } else {
-        //     echo 'Error al actualizar el producto';
-        // }
+        if (isset($response->code) && $response->code > 0) {
+            header('Location: ../home.php?status=palobby');
+        } else {
+            echo 'Error al actualizar el producto';
+        }
     }
 }

@@ -5,6 +5,9 @@ include_once './app/ProductsController.php';
 $productController = new ProductsController();
 $products = $productController->getProducts();
 
+include_once './app/BrandController.php';
+$brandController = new BrandController();
+$brands = $brandController->getAllBrands();
 ?>
 
 <!DOCTYPE html>
@@ -283,7 +286,7 @@ $products = $productController->getProducts();
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form id="modalFormAdd" method="POST" action="./app/AddProductController.php">
+                        <form id="modalFormAdd" enctype="multipart/form-data" method="POST" action="./app/AddProductController.php">
                             <div class="mb-3">
                                 <label for="name" class="form-label">Name</label>
                                 <input type="text" class="form-control" id="name" name="name" required>
@@ -300,14 +303,28 @@ $products = $productController->getProducts();
                                 <label for="features" class="form-label">Features</label>
                                 <textarea class="form-control" id="features" name="features" rows="3" required></textarea>
                             </div>
-                            <!-- <div class="mb-3">
+                            <div class="mb-3">
+                                <label for="uploadedfile" class="form-label">Upload File</label>
+                                <input name="uploadedfile" type="file" class="form-control" accept=".png, .jpg, .jpeg" />
+                            </div>
+                            <div class="mb-3">
                                 <label for="brand" class="form-label">Brand</label>
-                                <input class="form-control" id="brand" name="brand" rows="3" required>
-                            </div> -->
+                                <select id="brand" name="brand_id" class="form-select" required>
+                                    <?php if (isset($brands) && count($brands) > 0): ?>
+                                        <?php foreach ($brands as $brand): ?>
+                                            <option value="<?php echo htmlspecialchars($brand->id); ?>">
+                                                <?php echo htmlspecialchars($brand->name); ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                    <?php else: ?>
+                                        <option value="">No brands available</option>
+                                    <?php endif; ?>
+                                </select>
+                            </div>
+
 
                             <input type="hidden" name="action" value="addProduct">
                             <button type="submit" class="btn btn-primary">Save changes</button>
-
                         </form>
                     </div>
                     <div class="modal-footer">
@@ -317,31 +334,32 @@ $products = $productController->getProducts();
             </div>
         </div>
 
+
         <script>
             document.addEventListener('DOMContentLoaded', function() {
-            target = document.querySelectorAll('.target');
-            target.forEach(target => {
-                target.addEventListener('click', function() {
-                    console.log(target.value);
-                    swal({
-                            title: "Estas seguro?",
-                            text: "¡Una vez eliminado, no podrás recuperar este archivo imaginario!",
-                            icon: "warning",
-                            buttons: true,
-                            dangerMode: true,
-                        })
-                        .then((willDelete) => {
-                            if (willDelete) {
-                                document.getElementById(`delete-form-${target.value}`).submit()
-                                swal("Poof! ¡Tu archivo imaginario ha sido eliminado!", {
-                                    icon: "success",
-                                    
-                                });
-                            }
-                        });
+                target = document.querySelectorAll('.target');
+                target.forEach(target => {
+                    target.addEventListener('click', function() {
+                        console.log(target.value);
+                        swal({
+                                title: "Estas seguro?",
+                                text: "¡Una vez eliminado, no podrás recuperar este archivo imaginario!",
+                                icon: "warning",
+                                buttons: true,
+                                dangerMode: true,
+                            })
+                            .then((willDelete) => {
+                                if (willDelete) {
+                                    document.getElementById(`delete-form-${target.value}`).submit()
+                                    swal("Poof! ¡Tu archivo imaginario ha sido eliminado!", {
+                                        icon: "success",
+
+                                    });
+                                }
+                            });
+                    })
                 })
-            })
-        });
+            });
         </script>
 
         <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
