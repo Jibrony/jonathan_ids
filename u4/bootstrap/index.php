@@ -1,6 +1,6 @@
 <?php 
     include_once "./app/AuthController.php"
-    
+
 ?>
 
 <!DOCTYPE html>
@@ -51,6 +51,7 @@
                     <button type="submit" class="btn btn-primary custom-width">Iniciar Sesión</button>
 
                     <input type="hidden" name="action" value="login">
+                    <input type="hidden" name="global_token" value="token">
                 </form>
             </div>
         </div>

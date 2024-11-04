@@ -12,6 +12,10 @@ if (isset($_POST['action'])) {
             $authController = new AuthController();
             $authController->login($email, $password);
             break;
+        case 'token':
+            $authController = new AuthController();
+            $authController->globalToken();
+            break;
     }
 }
 
